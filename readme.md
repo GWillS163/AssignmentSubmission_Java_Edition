@@ -11,6 +11,10 @@ but there were some things I encountered that were a hassle. one of the things i
 - the large file can be stored in the cloud DB.
 - the retrieve message that the user queries all of the statuses of the files can be accomplished.
 
+## now design
+![](readme_md_files/dbe81e30-fc48-11ec-966e-d38e1ff8a1d7.jpeg?v=1&type=image)
+![](readme_md_files/eac38610-fc48-11ec-966e-d38e1ff8a1d7.jpeg?v=1&type=image)
+
 ## the description of an older version
 maybe this project should be public on GitHub as a repository?
 > developed and continuous update by python within 4 months range.
