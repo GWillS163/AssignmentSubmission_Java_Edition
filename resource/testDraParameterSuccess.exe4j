@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<exe4j version="8.0.1" transformSequenceNumber="3">
+  <directoryPresets config="D:/hbxy/Phase2/JavaWeb/week9_project/AssignmentSubmmsion/out/artifacts/testDrag_jar" />
+  <application name="AssignmentSubmmsion" distributionSourceDir="." />
+  <executable name="testDragParameter2" wrapperType="embed" executableDir="." redirectStderr="false" executableMode="console" />
+  <java mainClass="com.mengjq.assignmentsubmmsion.testDragParameter" minVersion="1.8" allowBetaVM="true">
+    <searchSequence>
+      <registry />
+      <envVar name="JAVA_HOME" />
+      <envVar name="JDK_HOME" />
+      <directory location="D:/Program Files/Java/jdk-11.0.4/jre" />
+      <directory location="D:/system/Downloads/jdk-11.0.15+10/bin" />
+    </searchSequence>
+    <classPath>
+      <archive location="D:/hbxy/Phase2/JavaWeb/week9_project/AssignmentSubmmsion/out/artifacts/testDrag_jar/AssignmentSubmmsion.jar" failOnError="false" />
+    </classPath>
+  </java>
+</exe4j>
