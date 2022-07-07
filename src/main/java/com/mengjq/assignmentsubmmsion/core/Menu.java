@@ -1,4 +1,4 @@
-package com.mengjq.assignmentsubmmsion.util;
+package com.mengjq.assignmentsubmmsion.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +39,7 @@ public class Menu {
             select = scanner.nextInt();
             try {
             } catch (Exception e) {
-                // if scanner is integer, continue, else reinput
+                // if scanner is integer, continue, else reInput
                 System.out.println("Please input a number");
             }
             // get the item of menu by select

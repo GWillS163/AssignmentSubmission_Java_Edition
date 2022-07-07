@@ -25,22 +25,5 @@ public class AssignmentInfoServiceImpl implements AssignmentInfoService {
 
     }
 
-    @Override
-    public Document getLatestAssignment() {
-        // TODO: implement this method
-        return null;
-    }
-
-    @Override
-    public List<AssignmentInfo> printAssignmentInfo() {
-        Document assignmentInfo = getLatestAssignment();
-        System.out.println("Assignment Info: ");
-        System.out.println("Assignment ID: " + assignmentInfo.get("_id"));
-        System.out.println("Assignment Name: " + assignmentInfo.get("name"));
-        System.out.println("Assignment Description: " + assignmentInfo.get("description"));
-        System.out.println("Assignment Deadline: " + assignmentInfo.get("deadline"));
-
-        return null;
-    }
 
 }

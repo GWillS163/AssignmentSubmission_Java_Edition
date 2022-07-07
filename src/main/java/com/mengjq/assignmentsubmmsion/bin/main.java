@@ -1,49 +1,48 @@
 package com.mengjq.assignmentsubmmsion.bin;
-
-import com.mengjq.assignmentsubmmsion.pojo.AssignmentInfo;
+import com.mengjq.assignmentsubmmsion.core.MongoDBService;
 import com.mengjq.assignmentsubmmsion.pojo.FileInfo;
-import com.mengjq.assignmentsubmmsion.service.impl.AssignmentInfoServiceImpl;
-import com.mengjq.assignmentsubmmsion.util.Menu;
-import com.mengjq.assignmentsubmmsion.util.DragFiles;
+import com.mengjq.assignmentsubmmsion.core.Menu;
+import com.mengjq.assignmentsubmmsion.core.DragFiles;
 
 import java.util.List;
 
 public class main {
     public static void main(String[] args) {
+        // The below variables are read from the config file.
+        String mongodbUrl = "mongodb+srv://mengjq:OXDueFslVZNWtiqT@assignmentsubmmsion.nttaj.mongodb.net/?retryWrites=true&w=majority";
+        String assignmentInfoDB = "AssignmentInfo";
+        String deviceRegDB = "DeviceReg";
+        String fileInfoDB = "FileInfo";
+        String studentInfoDB = "StudentInfo";
+        String clazz = "1909";
+
         System.out.println("Hello World!");
 
-        // Open the
+        MongoDBService mongoDBService = new MongoDBService(mongodbUrl, assignmentInfoDB, deviceRegDB, fileInfoDB, studentInfoDB, clazz);
+
         // 主程序是
-        //
-        //双击配置信息
         // select menu function
         Menu.printMenu();
         Menu.selectMenu();
 
         //选择1 输入学生信息 （保存至云端？识别当前设备特征为.xxx）
-        //   1 检索相似信息并保存至本地
+        mongoDBService.regCurrentDevice();
         //选择2 查询提交状态
-        //   输出所有数据库中提交的信息
-        //选择3 退出程序
+        mongoDBService.getSubmitStatus(clazz);
 
         //发送文件
         //0. get drag info from user
         DragFiles dragFiles = new DragFiles();
         List<FileInfo> fileInfos = dragFiles.getDragFileInfo(args);
-        //4. 获取文件上传时间
-
-        //1. [Record] download the latest assignment data from the cloud， and print
-        AssignmentInfoServiceImpl assignmentInfoServiceImpl = new AssignmentInfoServiceImpl();
-        List<AssignmentInfo> assignmentInfos = assignmentInfoServiceImpl.printAssignmentInfo();
 
 //        //2. 展示最新Assignment数据
-//        printAssignmentData(assignmentData);
+//        mongoDBService.showLatestAssignmentData();
 //        //3. [Record] 获取用户选择
-//        getuserchoice();
+//        getUserChoice();
 //        //4. [Record] 尝试重命名文件，并提示报错 if exists
-//        renamefiles();
+//        reNameFiles(fileInfos);
 //        //5. [Record] 上交 Files
-//        uploadfiles();
+//        mongoDBService.uploadFiles(fileInfos);
 
     }
 }

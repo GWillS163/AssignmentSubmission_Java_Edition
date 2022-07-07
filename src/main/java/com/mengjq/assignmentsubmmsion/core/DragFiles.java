@@ -1,4 +1,4 @@
-package com.mengjq.assignmentsubmmsion.util;
+package com.mengjq.assignmentsubmmsion.core;
 
 import com.mengjq.assignmentsubmmsion.pojo.FileInfo;
 

@@ -9,7 +9,5 @@ public interface AssignmentInfoService {
     public void insert(AssignmentInfoService assignmentInfoService);
     public void delete(String id);
     public void update(AssignmentInfoService assignmentInfoService);
-    public Document getLatestAssignment();
-    public List<AssignmentInfo> printAssignmentInfo();
 
 }
