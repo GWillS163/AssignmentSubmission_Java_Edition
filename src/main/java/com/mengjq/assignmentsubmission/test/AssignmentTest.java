@@ -16,13 +16,13 @@ public class AssignmentTest {
         AssignmentInfoService assignmentInfoService = new AssignmentInfoService(clazzDB, conf.assignmentInfoDB);
 
         // getAssignments
-//        Iterable<Document> assignments = assignmentInfoService.getAssignments();
-//        for ( Document assignment : assignments ) {
-//            System.out.println(assignment);
-//        }
+        Iterable<Document> assignments = assignmentInfoService.getAssignments();
+        for ( Document assignment : assignments ) {
+            System.out.println(assignment);
+        }
 
         // addAssignments
-        assignmentInfoService.addAssignment("99",
+        assignmentInfoService.addAssignment("92",
                 "已完成作业",
                 "完成设计文件",
                 "作业-姓名-学号.doc",

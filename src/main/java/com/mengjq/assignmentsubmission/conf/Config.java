@@ -1,7 +1,7 @@
 package com.mengjq.assignmentsubmission.conf;
 
 public class Config {
-    public String mongodbUrl = "mongodb://localhost:27017";
+    public String mongodbUrl = "mongodb+srv://mengjq:H98mTrQ1dMP43Iy6@assignmentsubmmsion.nttaj.mongodb.net/?retryWrites=true&w=majority";
     public String assignmentInfoDB = "AssignmentInfo";
     public String deviceRegDB = "DeviceReg";
     public String fileInfoDB = "FileInfo";
