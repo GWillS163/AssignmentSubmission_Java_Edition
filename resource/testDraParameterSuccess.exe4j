@@ -3,7 +3,7 @@
   <directoryPresets config="D:/hbxy/Phase2/JavaWeb/week9_project/AssignmentSubmmsion/out/artifacts/testDrag_jar" />
   <application name="AssignmentSubmmsion" distributionSourceDir="." />
   <executable name="testDragParameter2" wrapperType="embed" executableDir="." redirectStderr="false" executableMode="console" />
-  <java mainClass="com.mengjq.assignmentsubmmsion.testDragParameter" minVersion="1.8" allowBetaVM="true">
+  <java mainClass="com.mengjq.assignmentsubmission.testDragParameter" minVersion="1.8" allowBetaVM="true">
     <searchSequence>
       <registry />
       <envVar name="JAVA_HOME" />

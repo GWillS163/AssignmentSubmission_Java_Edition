@@ -14,7 +14,6 @@
     <orderEntry type="library" name="Maven: org.mongodb:bson:4.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:4.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.ini4j:ini4j:0.5.4" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-site:1.7.25" level="project" />
     <orderEntry type="library" name="Maven: org.docx4j:docx4j:6.1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.velocity:velocity:1.7" level="project" />
