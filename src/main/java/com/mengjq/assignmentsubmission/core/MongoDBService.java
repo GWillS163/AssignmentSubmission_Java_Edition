@@ -42,30 +42,29 @@ public class MongoDBService {
     }
 
 
-    public Document getStuInfo(String deviceMAC) {
-        Document deviceInfo = deviceRegService.devicRegDBCollection.find(eq("deviceMAC", deviceMAC)).first();
-        System.out.println(deviceInfo);
+    public Document tryGetStuInfoByMAC(String deviceMAC) {
+        Document deviceInfo = deviceRegService.tryGetStudentInfo("deviceMAC", deviceMAC);
+        if (deviceInfo == null) {
+            return null;
+        }
         Document stuInfo = studInfoDBCollection.find(eq("stuId", deviceInfo.get("stuId"))).first();
 //        System.out.println(stuInfo);
         return stuInfo;
     }
 
-
     public void regCurrentDevice(DeviceReg deviceReg) {
         deviceRegService.regCurrentDevice(deviceReg);
     }
 
-    public void getStatusByStuId(String userId) {
-        fileInfoService.getStatusByStuId(userId);
+    public FindIterable<Document> getAllSubmittedFileInfo() {
+        // get all files from mongoDB
+        return fileInfoService.getAllSubmittedFileInfo();
     }
 
-    public Iterable<Document> getAssignments() {
-//        Iterable<Document>
-//        System.out.println();assignmentInfoService.getAssignments();
-//        return result;
-        return assignmentInfoService.getAssignments();
+    public FindIterable<Document> getCollectingAssignments() {
+        // get all files from mongoDB
+        return assignmentInfoService.getCollectingAssignments();
     }
-
 
     public void uploadFiles(List<FileInfo> fileInfos) {
         fileInfoService.uploadFiles(fileInfos);

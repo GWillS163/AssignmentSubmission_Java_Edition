@@ -1,42 +1,85 @@
 package com.mengjq.assignmentsubmission.pojo;
 
+//import com.mengjq.assignmentsubmission.util.Base64Util;
+import com.mengjq.assignmentsubmission.util.Base64Util;
+import com.mengjq.assignmentsubmission.util.Hash;
 import org.bson.Document;
 
-public class FileInfo {
-    String fileId; //: 01
-    String assiId; //: 08
-    String stuId; //: 19852331
-    String stuName; //: 孟骏清
-    Integer fileSize; //: 302334323
-    String rawName; //: 孟骏清数据结构6.docx
-    String formatName; //: 数据结构-1909班-19852331-第六次.docx
-    String fileContent; //: "!l.dfd"
-    String hash; //: fae0b27c451c728867a567e8c1bb4e53
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-    public String getStuName() {
-        return stuName;
+public class FileInfo {
+    String fileId = null; //: 01
+
+    String assiId = null; //: 08
+    String stuId = null; //: 19852331
+    String stuName = null; //: 孟骏清
+
+
+    String uploadTime = null;
+
+    String filePath;
+    String rawName = null; //: 孟骏清数据结构6.docx
+    Integer fileSize = null; //: 302334323
+    String formatName = null; //: 数据结构-1909班-19852331-第六次.docx
+    String fileContent = null; //: "!l.dfd"
+    String hash = null; //: fae0b27c451c728867a567e8c1bb4e53
+
+    public FileInfo(String filePath) throws IOException {
+        this.filePath = filePath;
+        setRawName(filePath);
+        setFileSize(filePath);
+        setFileContent(filePath);
+        setHash();
+        setUploadTime();
+    }
+
+    private void setRawName(String path){
+        String[] pathArray = path.split("\\\\");
+        this.rawName = pathArray[pathArray.length - 1];
+    }
+
+    private void setFileSize(String filePath) {
+        this.fileSize = (int) (new java.io.File(filePath)).length();
+    }
+
+    // 是否放在这里?
+    public static void setFormatName(Document assi, Document stu) {
+        String formatName = assi.get("fileNameRule").toString()
+                .replace("班级", stu.get("stuClazz").toString());
+//                .replace("{assiId}", assiId)
+//                .replace("{stuName}", stuName)
+//                .replace("{rawName}", rawName);
+    }
+
+    public String getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime() {
+        // get current Date and Time
+        this.uploadTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     }
 
     public void setStuName(String stuName) {
         this.stuName = stuName;
     }
 
-    public Integer getFileSize() {
-        return fileSize;
-    }
-
     public void setFileSize(int fileSize) {
         this.fileSize = fileSize;
     }
 
-    public String getFileContent() {
-        return fileContent;
+    private void setFileContent(String filePath) throws IOException {
+        byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
+        this.fileContent = Base64Util.ToBase64(fileContent);
     }
 
-    public void setFileContent(String fileContent) {
-        this.fileContent = fileContent;
+    private void setHash() {
+        this.hash = Hash.getMD5(this.fileContent);
     }
 
+    // TODO: fileID 随机产生？
     public String getFileId() {
         return fileId;
     }
@@ -45,16 +88,8 @@ public class FileInfo {
         this.fileId = fileId;
     }
 
-    public String getAssiId() {
-        return assiId;
-    }
-
     public void setAssiId(String assiId) {
         this.assiId = assiId;
-    }
-
-    public String getStuId() {
-        return stuId;
     }
 
     public void setStuId(String stuId) {
@@ -62,24 +97,30 @@ public class FileInfo {
     }
 
 
+    public String getStuName() {
+        return stuName;
+    }
+
+    public String getFileContent() {
+        return fileContent;
+    }
+
+
+    public String getAssiId() {
+        return assiId;
+    }
+
+    public String getStuId() {
+        return stuId;
+    }
+
+
     public String getRawName() {
         return rawName;
     }
 
-    public void setRawName(String rawName) {
-        this.rawName = rawName;
-    }
-
     public String getFormatName() {
         return formatName;
-    }
-
-    public void setFormatNameByAssi(Document assi, Document stu) {
-        this.formatName = assi.get("fileNameRule").toString()
-                .replace("班级",      stu.get("stuClazz").toString())
-                .replace("{assiId}", assiId)
-                .replace("{stuName}", stuName)
-                .replace("{rawName}", rawName);
     }
 
 
@@ -87,7 +128,8 @@ public class FileInfo {
         return hash;
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
+    public Integer getFileSize() {
+        return fileSize;
     }
+
 }

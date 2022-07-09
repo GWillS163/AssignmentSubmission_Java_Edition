@@ -1,8 +1,11 @@
 package com.mengjq.assignmentsubmission.service;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.or;
 import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Sorts.ascending;
 
@@ -14,7 +17,7 @@ public class AssignmentInfoService {
         System.out.println(assiInfoDBCollection.getNamespace());
     }
 
-    public void addAssignment(String assId, String briefName, String describe, String fileNameRule, String DDL, Boolean status) {
+    public boolean addAssignment(String assId, String briefName, String describe, String fileNameRule, String DDL, Boolean status) {
         assiInfoDBCollection.insertOne(new Document()
                 .append("assId", assId)
                 .append("briefName", briefName)
@@ -23,19 +26,23 @@ public class AssignmentInfoService {
                 .append("DDL", DDL)
                 .append("status", status)
         );
+        return true;
     }
 
-    public Iterable<Document> getAssignments() {
-        Iterable<Document> assigns = assiInfoDBCollection.find(
-                        new Document().append("status", true))
-                .projection(fields(exclude("_id", "status")))
+    public FindIterable<Document> getCollectingAssignments() {
+        // TODO: 为什么 equals("status", true) 不能用？
+//        eq("status", "true")
+//                or(eq("status", true), eq("status", "true"))
+        return assiInfoDBCollection.find(
+//                new Document().append("status", "true")
+//                or(eq("status", true), eq("status", "true"))
+                ).projection(fields(exclude("_id")))
                 .sort(ascending("DDL"));
-        return assigns;
     }
 
     public Document getTestAssignment() {
         Document doc = assiInfoDBCollection.find(
-                new Document().append("assId", "94")).first();
+                new Document().append("assId", "14")).first();
         return doc;
     }
 }

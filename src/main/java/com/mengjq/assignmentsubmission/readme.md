@@ -19,7 +19,6 @@ Haha, Let's see what's new seriously!
 ## Now design
 ![](readme_md_files/dbe81e30-fc48-11ec-966e-d38e1ff8a1d7.jpeg?v=1&type=image)
 ![](readme_md_files/eac38610-fc48-11ec-966e-d38e1ff8a1d7.jpeg?v=1&type=image)
->![](readme_md_files/activityDiagram_1.jpg?v=1&type=image)
 
 ## the description of an older version
 maybe this project should be public on GitHub as a repository?
@@ -27,7 +26,6 @@ maybe this project should be public on GitHub as a repository?
 > ![](readme_md_files/eacca210-fc2d-11ec-9101-c54c4dd9fcf6.jpeg?v=1&type=image)
 >### the Folder tree I learned in last month ago
 >![](readme_md_files/76325cf0-fc2e-11ec-9101-c54c4dd9fcf6.jpeg?v=1&type=image)
-
 >some libs![](readme_md_files/e8135900-fc2e-11ec-9101-c54c4dd9fcf6.jpeg?v=1&type=image)
 
 2022-7-5 14:53:12

@@ -10,7 +10,8 @@ public class DeviceReg {
     String deviceMAC;
     String userId;
 
-    public DeviceReg() {
+    public DeviceReg(String userId) {
+        setAllWithUserId(userId);
     }
 
     public void setAllWithUserId(String userId) {
@@ -21,6 +22,17 @@ public class DeviceReg {
         this.deviceMAC = mac.getMAC();// 获取计算机域名
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "DeviceReg{" +
+                "deviceUser='" + deviceUser + '\'' +
+                ", deviceName='" + deviceName + '\'' +
+                ", deviceMAC='" + deviceMAC + '\'' +
+                ", userId='" + userId + '\'' +
+                '}';
+    }
+
     public String getUserId() {
         return userId;
     }
