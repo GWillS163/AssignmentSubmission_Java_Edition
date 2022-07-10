@@ -5,7 +5,7 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 
 //generate a unique MAC address for windows
-public class MAC {
+public class Device {
     public static String getMAC() {
         String mac = null;
         try {
@@ -26,4 +26,10 @@ public class MAC {
         }
         return mac;
     }
+
+    public static String getCurrentTime() {
+        // get system time with format "yyyy-MM-dd HH:mm:ss"
+        return java.time.LocalDateTime.now().toString();
+    }
+
 }

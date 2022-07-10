@@ -6,7 +6,6 @@ import com.mengjq.assignmentsubmission.service.DeviceRegService;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 
 public class DeviceRegTest {
     public static void main(String[] args) {
@@ -17,7 +16,7 @@ public class DeviceRegTest {
         DeviceRegService deviceRegService = new DeviceRegService(clazzDB, conf.deviceRegDB);
 
         // regCurrentDevice
-        DeviceReg deviceReg = new DeviceReg("19852331");
+        DeviceReg deviceReg = new DeviceReg();
         System.out.println("regCurrentDevice");
         System.out.println("deviceReg:  " + deviceReg.toString());
 

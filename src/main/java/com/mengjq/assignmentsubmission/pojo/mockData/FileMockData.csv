@@ -1,4 +1,4 @@
-_id,assId,fileContent,stuId,stuName,uploadTime,fileSize,rawName,formatName,hash
+_id,assiId,fileContent,stuId,stuName,uploadTime,fileSize,rawName,formatName,hash
 62c6aaab0dd9af1fdb611c7b,1,233,19852331,孟骏清,2022-7-8 10:29:13,3893238,meng.xlsx,孟骏清-19852331.xlsx,fae0b27c451c728867a567e8c1bb4e53
 62c6eba61df873ff0146f0b5,2,-0=-0=-0=0-0980890,19852331,孟骏清,2022-7-18 10:29:17,2329013,meng.zip,孟骏清-19852331.zip,fae0b27c451c728867a567e8c1bb4e53
 62c6ebbb1df873ff0146f0b6,14,234567890=-0=-1`1243435465433,19852333,赵云龙,2022-7-28 12:29:24,320121,1.docx,赵云龙-19852331.docx,fae0b27c451c728867a567e8c1bb4e53

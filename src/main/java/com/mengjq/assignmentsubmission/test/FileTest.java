@@ -3,7 +3,6 @@ package com.mengjq.assignmentsubmission.test;
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.core.EchoCLI;
 import com.mengjq.assignmentsubmission.core.FilesOpr;
-import com.mengjq.assignmentsubmission.service.AssignmentInfoService;
 import com.mengjq.assignmentsubmission.service.FileInfoService;
 import com.mongodb.client.*;
 import org.bson.Document;
@@ -18,10 +17,10 @@ public class FileTest {
         FilesOpr filesOpr = new FilesOpr();
         EchoCLI echoCLI= new EchoCLI();
 
-        // getAllSubmitStatus
-        System.out.println("getAllSubmitStatus:");
+        // getAllSubmittedFileInfo
+        System.out.println("getAllSubmittedFileInfo:");
         FindIterable<Document> allSubmitStatusDocs = fileInfoService.getAllSubmittedFileInfo();
-        echoCLI.showAllSubmitStatus(allSubmitStatusDocs);
+        echoCLI.showMySubmitStatus(allSubmitStatusDocs);
 
 
 //        // uploadFiles

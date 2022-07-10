@@ -16,8 +16,8 @@ public class StudentTest {
         MongoDatabase clazzDB = mongoClient.getDatabase(conf.clazz);
         StudentInfoService studentInfoService = new StudentInfoService(clazzDB, conf.studentInfoDB);
 
-        // regStudent
-        System.out.println("regStudent");
+        // getStudentInfo
+        System.out.println("getStudentInfo");
         System.out.println(studentInfoService.getStudentInfo("19852331"));
 
 //

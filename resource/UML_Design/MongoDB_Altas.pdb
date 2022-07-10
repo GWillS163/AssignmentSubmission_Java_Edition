@@ -2045,8 +2045,8 @@ LABL 0 新宋体,8,N</a:FontList>
 </o:Column>
 <o:Column Id="o41">
 <a:ObjectID>A48D94AE-C86D-4507-ACB3-52782CB07A66</a:ObjectID>
-<a:Name>mac</a:Name>
-<a:Code>mac</a:Code>
+<a:Name>device</a:Name>
+<a:Code>device</a:Code>
 <a:CreationDate>1657097201</a:CreationDate>
 <a:Creator>駿清清</a:Creator>
 <a:ModificationDate>1657097224</a:ModificationDate>

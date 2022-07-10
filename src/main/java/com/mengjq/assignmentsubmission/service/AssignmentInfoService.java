@@ -14,12 +14,12 @@ public class AssignmentInfoService {
 
     public AssignmentInfoService(MongoDatabase clazzDB, String assignmentInfo) {
         assiInfoDBCollection = clazzDB.getCollection(assignmentInfo);
-        System.out.println(assiInfoDBCollection.getNamespace());
+//        System.out.println(assiInfoDBCollection.getNamespace());
     }
 
-    public boolean addAssignment(String assId, String briefName, String describe, String fileNameRule, String DDL, Boolean status) {
+    public boolean addAssignment(String assiId, String briefName, String describe, String fileNameRule, String DDL, Boolean status) {
         assiInfoDBCollection.insertOne(new Document()
-                .append("assId", assId)
+                .append("assiId", assiId)
                 .append("briefName", briefName)
                 .append("describe", describe)
                 .append("fileNameRule", fileNameRule)
@@ -34,15 +34,13 @@ public class AssignmentInfoService {
 //        eq("status", "true")
 //                or(eq("status", true), eq("status", "true"))
         return assiInfoDBCollection.find(
-//                new Document().append("status", "true")
-//                or(eq("status", true), eq("status", "true"))
                 ).projection(fields(exclude("_id")))
                 .sort(ascending("DDL"));
     }
 
     public Document getTestAssignment() {
         Document doc = assiInfoDBCollection.find(
-                new Document().append("assId", "14")).first();
+                new Document().append("assiId", "14")).first();
         return doc;
     }
 }

@@ -16,15 +16,22 @@ public class FileInfo {
     String stuId = null; //: 19852331
     String stuName = null; //: 孟骏清
 
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
 
     String uploadTime = null;
-
     String filePath;
     String rawName = null; //: 孟骏清数据结构6.docx
     Integer fileSize = null; //: 302334323
     String formatName = null; //: 数据结构-1909班-19852331-第六次.docx
     String fileContent = null; //: "!l.dfd"
     String hash = null; //: fae0b27c451c728867a567e8c1bb4e53
+    String status = "未被查看"; //: fae0b27c451c728867a567e8c1bb4e53
 
     public FileInfo(String filePath) throws IOException {
         this.filePath = filePath;
@@ -70,6 +77,10 @@ public class FileInfo {
         this.fileSize = fileSize;
     }
 
+    public void setFormatName(String formatName) {
+        this.formatName = formatName;
+    }
+
     private void setFileContent(String filePath) throws IOException {
         byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
         this.fileContent = Base64Util.ToBase64(fileContent);
@@ -79,7 +90,7 @@ public class FileInfo {
         this.hash = Hash.getMD5(this.fileContent);
     }
 
-    // TODO: fileID 随机产生？
+    // TODO: 也许不需要_ fileID 随机产生？
     public String getFileId() {
         return fileId;
     }
@@ -132,4 +143,7 @@ public class FileInfo {
         return fileSize;
     }
 
+    public String getStatus() {
+        return status;
+    }
 }

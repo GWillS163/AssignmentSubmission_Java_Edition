@@ -1,6 +1,6 @@
 package com.mengjq.assignmentsubmission.pojo;
 
-import com.mengjq.assignmentsubmission.util.MAC;
+import com.mengjq.assignmentsubmission.util.Device;
 
 import java.util.Map;
 
@@ -8,19 +8,26 @@ public class DeviceReg {
     String deviceUser;
     String deviceName;
     String deviceMAC;
-    String userId;
+    String stuId;
+    String updateTime;
 
-    public DeviceReg(String userId) {
-        setAllWithUserId(userId);
+    public String getUpdateTime() {
+        return updateTime;
     }
 
-    public void setAllWithUserId(String userId) {
+    public DeviceReg() {
+        setAllDeviceInfo();
+        // get system time with format "yyyy-MM-dd HH:mm:ss"
+        updateTime = Device.getCurrentTime();
+
+    }
+
+    public void setAllDeviceInfo() {
         Map<String, String> map = System.getenv();
-        MAC mac =new MAC();
+        Device device =new Device();
         this.deviceUser = map.get("USERNAME");// 获取用户名
         this.deviceName = map.get("COMPUTERNAME");// 获取计算机名
-        this.deviceMAC = mac.getMAC();// 获取计算机域名
-        this.userId = userId;
+        this.deviceMAC = device.getMAC();// 获取计算机域名
     }
 
     @Override
@@ -29,16 +36,16 @@ public class DeviceReg {
                 "deviceUser='" + deviceUser + '\'' +
                 ", deviceName='" + deviceName + '\'' +
                 ", deviceMAC='" + deviceMAC + '\'' +
-                ", userId='" + userId + '\'' +
+                ", userId='" + stuId + '\'' +
                 '}';
     }
 
-    public String getUserId() {
-        return userId;
+    public String getStuId() {
+        return stuId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setStuId(String stuId) {
+        this.stuId = stuId;
     }
 
     public String getDeviceUser() {

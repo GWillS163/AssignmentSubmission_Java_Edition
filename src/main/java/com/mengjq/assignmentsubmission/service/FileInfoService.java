@@ -19,14 +19,13 @@ public class FileInfoService {
     public MongoCollection<Document> fileInfoDBCollection;
     public FileInfoService(MongoDatabase clazzDB, String fileInfo) {
         fileInfoDBCollection = clazzDB.getCollection(fileInfo);
-        System.out.println(fileInfoDBCollection.getNamespace());
+//        System.out.println(fileInfoDBCollection.getNamespace());
 
     }
 
-    // TODO: 未测试
-    public FindIterable<Document> getMySubmitStatus(String studentId){
+    public FindIterable<Document> getMySubmitStatus(String stuId){
         FindIterable<Document> docs = fileInfoDBCollection.find(
-                eq("stuId", studentId))
+                eq("stuId", stuId))
                 .projection(fields(
                         exclude("_id", "fileContent", "stuId", "stuName")
                         ))
@@ -34,8 +33,19 @@ public class FileInfoService {
         return docs;
     }
 
-    public FindIterable<Document> getAllSubmittedFileInfo() {
+    // todO :Version2 ACComplish this function
+    public FindIterable<Document> getAllSubmittedInfoStatusGroupByStuId() {
+        // can't use groupBy()
         // get all files from mongoDB group by stuId
+        FindIterable<Document> docs = fileInfoDBCollection.find()
+                .projection(fields(
+                        exclude("_id", "fileContent")
+                ))
+                .sort(ascending("stuId"));
+        return docs;
+    }
+
+    public FindIterable<Document> getAllSubmittedFileInfo() {
         // query all the file status form mongoDB
         FindIterable<Document> docs = fileInfoDBCollection.find()
                 .projection(fields(exclude("_id", "fileContent")))
@@ -45,15 +55,16 @@ public class FileInfoService {
 
     public boolean uploadFiles(List<FileInfo> fileInfos) {
         for (FileInfo fileInfo : fileInfos){
-            System.out.println(fileInfo.toString());
             Document document = new Document()
-                    .append("assId",      fileInfo.getAssiId())
+                    .append("assiId",      fileInfo.getAssiId())
                     .append("fileContent", fileInfo.getFileContent())
+                    .append("fileSize",    fileInfo.getFileSize())
                     .append("stuId",      fileInfo.getStuId())
-                    .append("userName",   fileInfo.getStuName())
+                    .append("stuName",   fileInfo.getStuName())
                     .append("rawName",    fileInfo.getRawName())
                     .append("formatName", fileInfo.getFormatName())
                     .append("hash",       fileInfo.getHash())
+                    .append("status",     fileInfo.getStatus())
                     .append("uploadTime", fileInfo.getUploadTime());
             fileInfoDBCollection.insertOne(document);
         }
@@ -62,7 +73,6 @@ public class FileInfoService {
 
     // download the file form mongoDB
     public void downloadFile(String fileId, String value, String path) {
-        // TODO: designed fileId
         FindIterable<Document> docs = fileInfoDBCollection.find(eq(fileId, value));
         if(docs.cursor().hasNext()) {
             Document doc = docs.first();

@@ -67,4 +67,13 @@ public class Config {
     public void setMongodbUrl(String mongodbUrl) {
         this.mongodbUrl = mongodbUrl;
     }
+
+    public void getMenuAbout(){
+        System.out.println("Release Version: 1.0.0");
+        System.out.println("Author: Mengjq");
+        System.out.println("Github: git@github.com:GWillS163/AssignmentSubmission_Java_Edition.git");
+        System.out.println("other Version: Python Edition");
+        System.out.println("other Version: Django Edition");
+        System.out.println("other Version: Spring Edition");
+    }
 }

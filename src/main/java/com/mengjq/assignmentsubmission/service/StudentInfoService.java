@@ -10,27 +10,14 @@ public class StudentInfoService {
 
     public StudentInfoService(MongoDatabase clazzDB, String studentInfo) {
         studInfoDBCollection = clazzDB.getCollection(studentInfo);
-        System.out.println(studInfoDBCollection.getNamespace());
+//        System.out.println(studInfoDBCollection.getNamespace());
     }
-//    // regStudentInfo
-//    public boolean regStudentInfo(String userId, String name, String password, String email, String phone, String clazz) {
-//        studInfoDBCollection.insertOne(new Document()
-//                .append("userId", userId)
-//                .append("name", name)
-//                .append("password", password)
-//                .append("email", email)
-//                .append("phone", phone)
-//                .append("clazz", clazz)
-//        );
-//        return true;
-//    }
-
     // TODO:not 测试 yet
     // getStudentInfo
-    public Document getStudentInfo(String userId) {
+    public Document getStudentInfo(String stuId) {
+        // query by stuId
         Document doc = studInfoDBCollection.find(
-                new Document().append("userId", userId)
-        ).first();
+                new Document().append("stuId", stuId)).first();
         return doc;
     }
 }

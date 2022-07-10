@@ -1,5 +1,8 @@
 package com.mengjq.assignmentsubmission.core;
 
+import com.mengjq.assignmentsubmission.pojo.FileInfo;
+import com.mengjq.assignmentsubmission.pojo.StudentInfo;
+import com.mengjq.assignmentsubmission.service.AssignmentInfoService;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -20,33 +23,42 @@ public class Menu {
 
     }
 
-    // print menu
-    public static void printMenu() {
-        // print the item of menu iterately
-        for (int i = 1; i < menuList.size(); i++) {
-            System.out.println(i + "." + menuList.get(i));
+    public static FilesOpr selectRenameMenu(Iterable<Document> assignments, FilesOpr filesOpr, Document stuInfo) {
+        ArrayList<String> selectList = new ArrayList<>();
+        // create a list to store all the assignment assiId
+        ArrayList<String> assiIdList = new ArrayList<>();
+        // get user input
+        Scanner sc = new Scanner(System.in);
+        for (Document assignment : assignments) {
+            assiIdList.add(assignment.getString("assiId"));
         }
-//        System.out.println("1. Upload file");
-//        System.out.println("2. Download file");
-//        System.out.println("3. Delete file");
-//        System.out.println("4. Get file upload time");
-//        System.out.println("5. Get file download time");
-//        System.out.println("6. Exit");
-    }
+        // iterate the filesOpr.getFileList() to get the file name
+        for (FileInfo fileInfo : filesOpr.fileInfoList) {
+            while (true){
+                System.out.println("Which assignments fit with :" +
+                        "\n\t" + fileInfo.getFilePath());
+                System.out.println("\tPlease input the assiId you want to rename:");
+                String assiId = sc.nextLine();
 
-    public static ArrayList<Integer> selectRenameMenu(Iterable<Document> assignments, String[] files) {
-        ArrayList<Integer> selectList = new ArrayList<>();
-        for (String file : files) {
-            System.out.println("What assignments fit with :" +file);
-            int count = 0;
-            for (Document assignment :assignments){
-                System.out.print(assignment + "\t");
-                count++;
+                //TODO: assiId 需要随机生成
+                if (assiIdList.contains(assiId)) {
+                    assignments.forEach(assignment -> {
+                        if (assignment.getString("assiId").equals(assiId)) {
+                            fileInfo.setStuId(stuInfo.getString("stuId"));
+                            fileInfo.setStuName(stuInfo.getString("stuName"));
+                            fileInfo.setAssiId(assiId);
+                            fileInfo.setFormatName(assignment.getString("briefName")
+                                    .replace("班级", stuInfo.getString("clazz"))
+                                    .replace("姓名", stuInfo.getString("stuName"))
+                                    .replace("学号", stuInfo.getString("stuId")));
+                        }
+                    });
+                    break;
+                } else {
+                    System.out.println("The assiId is not exist!");
+                }
             }
-            System.out.println("");
-
-            selectLoop(0, count);
-        }return selectList;
+        }return filesOpr;
     }
 
     public static Integer selectLoop(int start, int end) {
@@ -74,6 +86,7 @@ public class Menu {
             return selectLoop(0, settings.length);
         }
     }
+
 }
 
 
