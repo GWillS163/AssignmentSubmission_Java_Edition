@@ -54,7 +54,18 @@ public class FileInfoService {
     }
 
     public boolean uploadFiles(List<FileInfo> fileInfos) {
+        // calculate the time of upload
+        long start = System.currentTimeMillis();
+
         for (FileInfo fileInfo : fileInfos){
+            // if fileInfo fileSize over than 15M, then return false
+            if (fileInfo.getFileSize() > 15 * 1024 * 1024){
+                System.out.println(fileInfo.getRawName() + "File size is too large, please upload again!" + fileInfo.getFileSize());
+//                fileInfos.pop(fileInfo);
+                // TODO: Version2 ACComplish this function
+                System.out.println("the new file upload method is not implemented yet!");
+                continue;
+            }
             Document document = new Document()
                     .append("assiId",      fileInfo.getAssiId())
                     .append("fileContent", fileInfo.getFileContent())
@@ -67,6 +78,9 @@ public class FileInfoService {
                     .append("status",     fileInfo.getStatus())
                     .append("uploadTime", fileInfo.getUploadTime());
             fileInfoDBCollection.insertOne(document);
+            long end = System.currentTimeMillis();
+            System.out.println("uploadFiles time: " + (end - start)/1000 + "s");
+
         }
         return true;
     }

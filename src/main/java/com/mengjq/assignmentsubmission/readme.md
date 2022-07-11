@@ -8,6 +8,19 @@ but there were some things I encountered that were a hassle. one of the things i
 
 Haha, Let's see what's new seriously!
 1. no invasion configured yet, such as no edit userFile, no config.txt in user's folder.
+2. better network stability, and with (54MB/16s=)3.375Mbps, it's fast enough to upload a file.
+3. 
+
+#### speed test
+![img.png](img.png)
+upload(method1) speed of 55MB file: 396s, 44s, 48, 47, 41, 39, 52, 44, 48, 38
+upload(method2) speed of 55MB file: 298s, 280s, 309, 363s, 376s
+download speed of 55MB file: 16s？
+-round 2
+10MB : 39s,22s
+upload(method1 - chunk 1024000) 55MB : 277s, 282s
+upload(method1 - chunk  303200) 55MB :  352s
+
 ## Features of The Newest Version
 > that is to use mature technology to resolve current questions I need to be solved.
 - Java edition should only get users' inputs and mechanical processes, with no data should be stored in the program.

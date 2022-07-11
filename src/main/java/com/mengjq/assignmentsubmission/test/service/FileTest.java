@@ -1,11 +1,14 @@
-package com.mengjq.assignmentsubmission.test;
+package com.mengjq.assignmentsubmission.test.service;
 
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.core.EchoCLI;
 import com.mengjq.assignmentsubmission.core.FilesOpr;
+import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mengjq.assignmentsubmission.service.FileInfoService;
 import com.mongodb.client.*;
 import org.bson.Document;
+
+import java.io.IOException;
 
 public class FileTest {
     public static void main(String[] args) {
@@ -23,16 +26,16 @@ public class FileTest {
         echoCLI.showMySubmitStatus(allSubmitStatusDocs);
 
 
-//        // uploadFiles
-//        System.out.println("upload file:");
-//        FileInfo fileInfo = null;
-//        try {
-//            fileInfo = new FileInfo("D:\\Project\\AssignmentSubmission_Java_Edition\\readme.md");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        filesOpr.addFileInfoList(fileInfo);
-//        fileInfoService.uploadFiles(filesOpr.getFileInfoList());
+        // uploadFiles
+        System.out.println("upload file:");
+        FileInfo fileInfo = null;
+        try {
+            fileInfo = new FileInfo("D:\\system\\桌面\\Client_submit_mainV3.3 测试版.exe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        filesOpr.addFileInfoList(fileInfo);
+        fileInfoService.uploadFiles(filesOpr.getFileInfoList());
 //
         // download file
 //        System.out.println("download file:");

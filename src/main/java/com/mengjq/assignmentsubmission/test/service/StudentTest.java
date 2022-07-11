@@ -1,4 +1,4 @@
-package com.mengjq.assignmentsubmission.test;
+package com.mengjq.assignmentsubmission.test.service;
 
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.service.StudentInfoService;
