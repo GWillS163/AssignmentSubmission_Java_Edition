@@ -2,11 +2,11 @@
   <configuration default="false" name="AssignmentTest" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-    <option name="MAIN_CLASS_NAME" value="com.mengjq.assignmentsubmission.test.AssignmentTest" />
+    <option name="MAIN_CLASS_NAME" value="com.mengjq.assignmentsubmission.test.service.AssignmentTest" />
     <module name="AssignmentSubmmsion" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.mengjq.assignmentsubmission.test.*" />
+        <option name="PATTERN" value="com.mengjq.assignmentsubmission.test.service.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

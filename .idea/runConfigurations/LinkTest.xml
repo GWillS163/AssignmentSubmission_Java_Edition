@@ -6,7 +6,7 @@
     <module name="AssignmentSubmmsion" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.mengjq.assignmentsubmission.test.*" />
+        <option name="PATTERN" value="com.mengjq.assignmentsubmission.test.service.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

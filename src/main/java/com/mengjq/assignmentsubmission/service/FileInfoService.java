@@ -54,6 +54,9 @@ public class FileInfoService {
     }
 
     public boolean uploadFiles(List<FileInfo> fileInfos) {
+        // calculate the time of upload
+        long start = System.currentTimeMillis();
+
         for (FileInfo fileInfo : fileInfos){
             Document document = new Document()
                     .append("assiId",      fileInfo.getAssiId())
@@ -67,6 +70,9 @@ public class FileInfoService {
                     .append("status",     fileInfo.getStatus())
                     .append("uploadTime", fileInfo.getUploadTime());
             fileInfoDBCollection.insertOne(document);
+            long end = System.currentTimeMillis();
+            System.out.println("uploadFiles time: " + (end - start)/1000 + "s");
+
         }
         return true;
     }
