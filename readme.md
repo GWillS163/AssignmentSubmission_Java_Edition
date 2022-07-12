@@ -1,5 +1,5 @@
 [![OSCS Status](https://www.oscs1024.com/platform/badge/.svg?size=small)](https://www.murphysec.com/dr/yOeb26pRLRus7V4HaN)
-
+[![Build Status](https://app.travis-ci.com/GWillS163/AssignmentSubmission_Java_Edition.svg?branch=master)](https://app.travis-ci.com/GWillS163/AssignmentSubmission_Java_Edition)
 ## The reconstruction of the assignment submission tool.
 before this, there are one tool developed by python using related libs.
 but there were some things I encountered that were a hassle. one of the things is GUI when using GUI to develop, the consequential file size will be bigger than 50MB, but there in fact only 9MB before using GUI.
