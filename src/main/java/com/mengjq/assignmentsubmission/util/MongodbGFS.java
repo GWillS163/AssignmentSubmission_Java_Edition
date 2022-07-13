@@ -50,6 +50,32 @@ public class MongodbGFS {
         // 使用默认的名字
         // gridFSBucket=GridFSBuckets.create(useDatabase);
     }
+    public boolean uploadByGFS(String url) {
+        InputStream ins = null;
+        ObjectId fileid = null;
+        // 配置一些参数
+        GridFSUploadOptions options = null;
+        // 截取文件名
+        String filename = url.substring((url.lastIndexOf("\\") + 1), url.length());
+        try {
+
+            ins = new FileInputStream(new File(url));
+            options = new GridFSUploadOptions().chunkSizeBytes(303200).metadata(new Document("type", "presentation"));
+
+            // 存储文件，第一个参数是文件名称，第二个是输入流,第三个是参数设置
+            fileid = gridFSBucket.uploadFromStream(filename, ins, options);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                ins.close();
+            } catch (IOException e) {
+            }
+        }
+        return true;
+    }
+
 
     // 将文件存储到mongodb,返回存储完成后的ObjectID
     public ObjectId saveFile(String url) {
@@ -58,7 +84,7 @@ public class MongodbGFS {
         // 配置一些参数
         GridFSUploadOptions options = null;
         // 截取文件名
-        String filename = url.substring((url.lastIndexOf("/") + 1), url.length());
+        String filename = url.substring((url.lastIndexOf("\\") + 1), url.length());
         try {
             ins = new FileInputStream(new File(url));
             options = new GridFSUploadOptions().chunkSizeBytes(303200).metadata(new Document("type", "presentation"));

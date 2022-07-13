@@ -96,7 +96,7 @@ public class main {
             //5. [Record] 上交 Files
             Boolean res = mongoDBService.uploadFiles(filesOpr.fileInfoList);
             if(res){
-                System.out.println("上交成功！");
+                System.out.println("上交处理结束！");
             }
         }
     }

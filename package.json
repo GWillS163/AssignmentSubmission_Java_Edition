@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "istanbul": "^0.4.5"
+  },
+  "scripts": {
+    "cover": "istanbul cover node_modules/mocha/bin/_mocha"
+  },
+  "dependencies": {
+    "nyc": "^15.1.0"
+  }
+}
