@@ -19,6 +19,11 @@ Haha, Let's see what's new seriously!
 - the large file can be stored in the cloud DB.
 - the retrieve message that the user queries all of the statuses of the files can be accomplished.
 
+## 数据库表设计 DBName	Collection	Comment
+
+![image](https://user-images.githubusercontent.com/49674629/179160937-f0f3a9e3-4414-43e2-8349-5574c9d44715.png)
+
+
 ## Now design
 <div align=center >
 <img src="readme_md_files/activityDiagram_1.jpg?v=1&type=image" width="400" align="center"/>
