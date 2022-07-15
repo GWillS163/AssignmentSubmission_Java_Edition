@@ -21,12 +21,13 @@ Haha, Let's see what's new seriously!
 
 ## 数据库表设计 DBName	Collection	Comment
 
-![image](https://user-images.githubusercontent.com/49674629/179160937-f0f3a9e3-4414-43e2-8349-5574c9d44715.png)
-
+<div align=center >
+<img src="[readme_md_files/activityDiagram_1.jpg?v=1&type=image](https://user-images.githubusercontent.com/49674629/179160937-f0f3a9e3-4414-43e2-8349-5574c9d44715.png)" width="600" align="center"/>
+</div>
 
 ## Now design
 <div align=center >
-<img src="readme_md_files/activityDiagram_1.jpg?v=1&type=image" width="400" align="center"/>
+<img src="readme_md_files/activityDiagram_1.jpg?v=1&type=image" width="600" align="center"/>
 </div>
 
 ## About File upload Module
