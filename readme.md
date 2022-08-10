@@ -7,7 +7,7 @@ but there were some things I encountered that were a hassle. one of the things i
 
 ### The Target of Develop Java Edition
 1. newer than before! :D
-2. more features! but no finished.
+2. more features!
 
 Haha, Let's see what's new seriously!
 1. no invasion configured yet, such as no edit user File, no config.txt in user's folder.
