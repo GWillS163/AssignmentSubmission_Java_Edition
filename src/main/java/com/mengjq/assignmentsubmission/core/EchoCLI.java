@@ -3,8 +3,6 @@ package com.mengjq.assignmentsubmission.core;
 
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
-
-import static com.mongodb.client.model.Aggregates.group;
 import static com.mongodb.client.model.Filters.eq;
 
 public class EchoCLI {
@@ -28,7 +26,6 @@ public class EchoCLI {
                     assignment.getString("status"));
         }
         System.out.println("--------------------------");
-
     }
 
     public void showMySubmitStatus(FindIterable<Document> docs){
@@ -202,19 +199,44 @@ public class EchoCLI {
         System.out.println(s);
     }
 
+    public void echoInline(String s){
+        System.out.print(s);
+    }
+
     public void showError(String s) {
         System.out.println("[Error]: " + s);
     }
 
     public void showStuInfo(Document stuInfo) {
-        System.out.print("Current student: ");
+        System.out.println("Current student: ");
         if (stuInfo == null) {
             System.out.println("No student selected");
         } else {
-            System.out.print("stuId: " + stuInfo.getString("stuId"));
-            System.out.print("stuName: " + stuInfo.getString("stuName"));
-            System.out.print("clazz: " + stuInfo.getString("clazz"));
-            System.out.println();
+            System.out.println(
+                    "\tstuId: " + stuInfo.getString("stuId") + "\n" +
+                    "\tstuName: " + stuInfo.getString("stuName") + "\n" +
+                    "\tclazz: " + stuInfo.getString("clazz")
+            );
         }
+    }
+
+    public void loading(String loadingStr) {
+        for (int i = 0; i < 10; i++) {
+            System.out.print("\r" +loadingStr + new String(new char[i]).replace("\0", "."));
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(" Done!");
+    }
+
+    public void noStuInfo() {
+        System.out.println("请先配置个人信息！");
+    }
+
+    public void fileUpOver() {
+        System.out.println("上交处理结束！");
     }
 }

@@ -1,8 +1,6 @@
 package com.mengjq.assignmentsubmission.core;
 
 import com.mengjq.assignmentsubmission.pojo.FileInfo;
-import com.mengjq.assignmentsubmission.pojo.StudentInfo;
-import com.mengjq.assignmentsubmission.service.AssignmentInfoService;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class Menu {
 
     }
 
-    public static FilesOpr selectRenameMenu(Iterable<Document> assignments, FilesOpr filesOpr, Document stuInfo) {
+    public static ArrayList<String> selectRenameMenu(Iterable<Document> assignments, FilesOpr filesOpr, Document stuInfo) {
         ArrayList<String> selectList = new ArrayList<>();
         // create a list to store all the assignment assiId
         ArrayList<String> assiIdList = new ArrayList<>();
@@ -53,12 +51,14 @@ public class Menu {
                                     .replace("学号", stuInfo.getString("stuId")));
                         }
                     });
+                    selectList.add(assiId);
                     break;
                 } else {
                     System.out.println("The assiId is not exist!");
                 }
             }
-        }return filesOpr;
+        }
+        return selectList;
     }
 
     public static Integer selectLoop(int start, int end) {
