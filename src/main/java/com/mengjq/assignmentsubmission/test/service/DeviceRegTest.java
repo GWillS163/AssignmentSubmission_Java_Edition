@@ -1,8 +1,8 @@
 package com.mengjq.assignmentsubmission.test.service;
 
 import com.mengjq.assignmentsubmission.conf.Config;
-import com.mengjq.assignmentsubmission.pojo.DeviceReg;
-import com.mengjq.assignmentsubmission.service.DeviceRegService;
+import com.mengjq.assignmentsubmission.pojo.DeviceInfo;
+import com.mengjq.assignmentsubmission.service.DeviceInfoService;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -13,14 +13,14 @@ public class DeviceRegTest {
 
         MongoClient mongoClient = MongoClients.create(conf.mongodbUrl);
         MongoDatabase clazzDB = mongoClient.getDatabase(conf.clazz);
-        DeviceRegService deviceRegService = new DeviceRegService(clazzDB, conf.deviceRegDB);
+        DeviceInfoService deviceInfoService = new DeviceInfoService(clazzDB, conf.deviceRegDB);
 
         // regCurrentDevice
-        DeviceReg deviceReg = new DeviceReg();
+        DeviceInfo deviceInfo = new DeviceInfo();
         System.out.println("regCurrentDevice");
-        System.out.println("deviceReg:  " + deviceReg.toString());
+        System.out.println("deviceReg:  " + deviceInfo.toString());
 
-        System.out.println(deviceRegService.regCurrentDevice(deviceReg));
+        deviceInfoService.regCurrentDevice(deviceInfo);
         System.out.println("MongoDB insert DeviceReg success!");
 
     }

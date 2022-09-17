@@ -1,12 +1,11 @@
 package com.mengjq.assignmentsubmission.service;
 
+import com.mengjq.assignmentsubmission.mapper.FileInfoMapper;
 import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mengjq.assignmentsubmission.util.MongodbGFS;
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import java.util.Base64;
 import java.util.List;
@@ -19,51 +18,46 @@ import static com.mongodb.client.model.Sorts.descending;
 
 public class FileInfoService {
     private MongodbGFS mgfs;
-    public MongoCollection<Document> fileInfoDBCollection;
-    public FileInfoService(MongoDatabase clazzDB, String fileInfo) {
-        fileInfoDBCollection = clazzDB.getCollection(fileInfo);
-//        System.out.println(fileInfoDBCollection.getNamespace());
+    public FileInfoMapper fileInfoMapper;
 
+    public FileInfoService(MongoDatabase clazzDB, String fileInfo) {
+        fileInfoMapper = new FileInfoMapper(clazzDB, fileInfo);
+//        System.out.println(fileInfoDBCollection.getNamespace());
     }
 
+    // 个人查询 - 查询个人所有已提交的作业
     public FindIterable<Document> getMySubmitStatus(String stuId){
-        // TOOD: 也要在另一个大文件表中进行查询
-        // 存储桶内查询
+        // TODO: 也要在另一个存储桶内查询
 
-        FindIterable<Document> docs = fileInfoDBCollection.find(
-                eq("stuId", stuId))
+        return fileInfoMapper.request((Document) eq("stuId", stuId))
                 .projection(fields(
                         exclude("_id", "fileContent", "stuId", "stuName")
-                        ))
+                ))
                 .sort(descending("uploadTime"));
-        return docs;
+    }
+
+    // 公共查询 - 查询所有人已提交的作业
+    public FindIterable<Document> getAllSubmittedFileInfo() {
+        // TODO: 范围文件时，两种查询格式也需要一致。
+        // query all the file status form mongoDB
+        return fileInfoMapper.request()
+                .projection(fields(exclude("_id", "fileContent")))
+                .sort(ascending("userId"));
     }
 
     // todo :Version2 ACComplish this function
-    public FindIterable<Document> getAllSubmittedInfoStatusGroupByStuId() {
-        // TODO: 查询时 两种格式依然一致
-        //
+//    private FindIterable<Document> getAllSubmittedInfoStatusGroupByStuId() {
+//        // TODO: 查询时 两种格式依然一致
+//        // can't use groupBy()
+//        // get all files from mongoDB group by stuId
+//        return fileInfoMapper.request()
+//                .projection(fields(
+//                        exclude("_id", "fileContent")
+//                ))
+//                .sort(ascending("stuId"));
+//    }
 
-        // can't use groupBy()
-        // get all files from mongoDB group by stuId
-        FindIterable<Document> docs = fileInfoDBCollection.find()
-                .projection(fields(
-                        exclude("_id", "fileContent")
-                ))
-                .sort(ascending("stuId"));
-        return docs;
-    }
-
-    public FindIterable<Document> getAllSubmittedFileInfo() {
-        // TODO: 范围文件时，两种查询格式也需要一致。
-
-        // query all the file status form mongoDB
-        FindIterable<Document> docs = fileInfoDBCollection.find()
-                .projection(fields(exclude("_id", "fileContent")))
-                .sort(ascending("userId"));
-        return docs;
-    }
-
+    // 上传文件 - 上传文件到mongoDB
     public boolean uploadFiles(List<FileInfo> fileInfos) {
         // calculate the time of upload
         long start = System.currentTimeMillis();
@@ -73,7 +67,7 @@ public class FileInfoService {
             if (fileInfo.getFileSize() > 15 * 1024 * 1024){
                 System.out.println(fileInfo.getRawName() + "File size is too large, please upload again!" + fileInfo.getFileSize());
 //                fileInfos.pop(fileInfo);
-//                // TODO: Version2 ACComplish this function
+//                // TODO: Version2 Accomplish this function that can upload the file which size is over than 15M
 //                mgfs = new MongodbGFS();
 //
 //                ObjectId id=mgfs.saveFile(url);
@@ -81,18 +75,8 @@ public class FileInfoService {
                 System.out.println("the new file upload method is not implemented yet!");
                 continue;
             }
-            Document document = new Document()
-                    .append("assiId",      fileInfo.getAssiId())
-                    .append("fileContent", fileInfo.getFileContent())
-                    .append("fileSize",    fileInfo.getFileSize())
-                    .append("stuId",      fileInfo.getStuId())
-                    .append("stuName",   fileInfo.getStuName())
-                    .append("rawName",    fileInfo.getRawName())
-                    .append("formatName", fileInfo.getFormatName())
-                    .append("hash",       fileInfo.getHash())
-                    .append("status",     fileInfo.getStatus())
-                    .append("uploadTime", fileInfo.getUploadTime());
-            fileInfoDBCollection.insertOne(document);
+
+            fileInfoMapper.create(fileInfo);
             long end = System.currentTimeMillis();
             System.out.println("uploadFiles time: " + (end - start)/1000 + "s");
 
@@ -100,24 +84,31 @@ public class FileInfoService {
         return true;
     }
 
-    // download the file form mongoDB
-    public void downloadFile(String fileId, String value, String path) {
-        FindIterable<Document> docs = fileInfoDBCollection.find(eq(fileId, value));
+    // 下载文件 - download the file form mongoDB
+    public boolean downloadFile(String fileId, String value, String path) {
+        FindIterable<Document> docs = fileInfoMapper.request((Document) eq(fileId, value));
         if(docs.cursor().hasNext()) {
             Document doc = docs.first();
+            assert doc != null;
             String fileContent = doc.getString("fileContent");
             byte[] bytes = Base64.getDecoder().decode(fileContent);
             String formatName = doc.getString("formatName");
-            saveBinaryData(bytes, path + formatName);
+            boolean saveStatus = saveBinaryData(bytes, path + formatName);
 
+            if (saveStatus) {
+                System.out.println("download file success!");
+            }
 //            System.out.println(doc.toJson());
 //            System.out.println(fileContent);
         }else {
             System.out.println("no file found with this:\n\t fileId: " + fileId + "  and value: " + value);
+            System.out.println("download file failed!");
+            return false;
         }
-
+        return true;
     }
 
+    // 保存文件 - save the file to local
     private boolean saveBinaryData(byte[] decode, String path) {
         // save binary data to file
         try {

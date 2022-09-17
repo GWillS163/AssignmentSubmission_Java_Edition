@@ -2,12 +2,9 @@ package com.mengjq.assignmentsubmission.test;
 
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.core.EchoCLI;
-import com.mengjq.assignmentsubmission.service.MongoDBService;
-import com.mengjq.assignmentsubmission.service.AssignmentInfoService;
-import com.mengjq.assignmentsubmission.service.FileInfoService;
+import com.mengjq.assignmentsubmission.core.mongoDBOpr;
 import com.mengjq.assignmentsubmission.util.Device;
 import com.mongodb.client.*;
-import org.bson.Document;
 
 public class mainTest {
     public static void main(String[] args) {
@@ -19,7 +16,7 @@ public class mainTest {
 //        AssignmentInfoService assignmentInfoService = new AssignmentInfoService(clazzDB, conf.assignmentInfoDB);
 //        FileInfoService fileInfoService = new FileInfoService(clazzDB, conf.fileInfoDB);
 
-        MongoDBService mongoDBService = new MongoDBService(conf.mongodbUrl, conf.clazz,
+        mongoDBOpr mongoDBService = new mongoDBOpr(conf.mongodbUrl, conf.clazz,
                 conf.assignmentInfoDB, conf.deviceRegDB, conf.fileInfoDB, conf.studentInfoDB);
 
 //

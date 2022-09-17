@@ -10,15 +10,12 @@ import java.util.Scanner;
 
 // add comments here
 public class Menu {
-
     // create a menuList to store all the menu items
-    private static List<String> menuList = new ArrayList<String>();
+//    private static List<String> menuList = new ArrayList<String>();
 
     public static void setMenuList(List<String> menuList) {
 //        menu.menuList = menuList;
         Collections.addAll(menuList, "1. Input Student Information", "2. Query Submission Status", "3. Exit");
-
-
     }
 
     public static ArrayList<String> selectRenameMenu(Iterable<Document> assignments, FilesOpr filesOpr, Document stuInfo) {

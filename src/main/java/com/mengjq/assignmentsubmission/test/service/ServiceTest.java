@@ -2,22 +2,22 @@ package com.mengjq.assignmentsubmission.test.service;
 
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.core.EchoCLI;
-import com.mengjq.assignmentsubmission.pojo.DeviceReg;
-import com.mengjq.assignmentsubmission.service.MongoDBService;
+import com.mengjq.assignmentsubmission.pojo.DeviceInfo;
+import com.mengjq.assignmentsubmission.core.mongoDBOpr;
 
 public class ServiceTest {
     public static void main(String[] args) {
         EchoCLI echoCLI = new EchoCLI();
         Config conf = new Config();
-        MongoDBService mongoDBService = new MongoDBService(
+        mongoDBOpr mongoDBService = new mongoDBOpr(
                 conf.mongodbUrl,
                 conf.clazz,
                 conf.assignmentInfoDB,
                 conf.deviceRegDB,
                 conf.fileInfoDB,
                 conf.studentInfoDB);
-        DeviceReg deviceReg = new DeviceReg();
-        deviceReg.setStuId("19852331");
+        DeviceInfo deviceInfo = new DeviceInfo();
+        deviceInfo.setStuId("19852331");
 //
 //        // mongoDB service test
 //        System.out.println(mongoDBService.tryGetStuInfoByMAC(deviceReg.getDeviceMAC()));
@@ -37,6 +37,6 @@ public class ServiceTest {
 //        ArrayList<Integer> selected = Menu.selectRenameMenu(assignments, files);
 //        System.out.println(selected);
 
-        mongoDBService.getMySubmittedFileInfo(deviceReg.getDeviceMAC());
+        mongoDBService.getMySubmittedFileInfo(deviceInfo.getDeviceMAC());
         }
 }

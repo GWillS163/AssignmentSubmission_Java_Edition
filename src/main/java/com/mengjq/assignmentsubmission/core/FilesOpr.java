@@ -4,6 +4,7 @@ import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import java.io.IOException;
 import java.util.List;
 
+// 用来存储文件信息 用于文件上传
 public class FilesOpr {
     public List<FileInfo> fileInfoList;
 

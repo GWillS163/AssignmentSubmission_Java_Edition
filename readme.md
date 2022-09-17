@@ -12,6 +12,13 @@ but there were some things I encountered that were a hassle. one of the things i
 1. newer than before! :D
 2. more features!
 
+# 说明 (Chinese)
+pojo: 实体类
+mapper: 用于将数据库中的数据映射到实体类中
+service: 用于处理业务逻辑
+
+deviceId: 设备ID
+
 Haha, Let's see what's new seriously!
 
 1. no invasion configured yet, such as no edit user File, no config.txt in user's folder.

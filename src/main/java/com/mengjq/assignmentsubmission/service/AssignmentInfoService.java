@@ -1,46 +1,34 @@
 package com.mengjq.assignmentsubmission.service;
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.or;
 import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Sorts.ascending;
+import com.mengjq.assignmentsubmission.mapper.AssignmentInfoMapper;
 
 public class AssignmentInfoService {
-    public MongoCollection<Document> assiInfoDBCollection;
+    AssignmentInfoMapper assignmentInfoMapper;
 
     public AssignmentInfoService(MongoDatabase clazzDB, String assignmentInfo) {
-        assiInfoDBCollection = clazzDB.getCollection(assignmentInfo);
+        assignmentInfoMapper = new AssignmentInfoMapper(clazzDB, assignmentInfo);
 //        System.out.println(assiInfoDBCollection.getNamespace());
     }
 
-    public boolean addAssignment(String assiId, String briefName, String describe, String fileNameRule, String DDL, Boolean status) {
-        assiInfoDBCollection.insertOne(new Document()
-                .append("assiId", assiId)
-                .append("briefName", briefName)
-                .append("describe", describe)
-                .append("fileNameRule", fileNameRule)
-                .append("DDL", DDL)
-                .append("status", status)
-        );
-        return true;
-    }
-
+    // 查询正在收集的作业
     public FindIterable<Document> getCollectingAssignments() {
         // TODO: 为什么 equals("status", true) 不能用？
 //        eq("status", "true")
 //                or(eq("status", true), eq("status", "true"))
-        return assiInfoDBCollection.find(
+        return assignmentInfoMapper.request(
                 ).projection(fields(exclude("_id")))
                 .sort(ascending("DDL"));
     }
 
+    // 获得测试作业
     public Document getTestAssignment() {
-        Document doc = assiInfoDBCollection.find(
-                new Document().append("assiId", "14")).first();
-        return doc;
+        return assignmentInfoMapper.request(
+                new Document().append("assiId", "14"))
+                .first();
     }
 }

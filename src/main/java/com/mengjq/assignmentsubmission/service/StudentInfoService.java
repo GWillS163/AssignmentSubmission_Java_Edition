@@ -1,8 +1,11 @@
 package com.mengjq.assignmentsubmission.service;
-
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+
+import java.util.SortedSet;
 
 public class StudentInfoService {
 
@@ -16,8 +19,15 @@ public class StudentInfoService {
     // getStudentInfo
     public Document getStudentInfo(String stuId) {
         // query by stuId
-        Document doc = studInfoDBCollection.find(
+        return studInfoDBCollection.find(
                 new Document().append("stuId", stuId)).first();
-        return doc;
+    }
+
+    public FindIterable<Document> findStuInfoByStuId(Bson eq) {
+        return studInfoDBCollection.find(eq);
+    }
+
+    public FindIterable<Document> getAllStuInfo() {
+        return studInfoDBCollection.find();
     }
 }

@@ -10,11 +10,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class FileInfo {
-    String fileId = null; //: 01
-
-    String assiId = null; //: 08
-    String stuId = null; //: 19852331
-    String stuName = null; //: 孟骏清
+    public String fileId = null; //: 01
+    public String assiId = null; //: 08
+    public String stuId = null; //: 19852331
+    public String stuName = null; //: 孟骏清
+    public String uploadTime = null;
+    public String filePath;
+    public String rawName = null; //: 孟骏清数据结构6.docx
+    public Integer fileSize = null; //: 302334323
+    public String formatName = null; //: 数据结构-1909班-19852331-第六次.docx
+    public String fileContent = null; //: "!l.dfd"
+    public String hash = null; //: fae0b27c451c728867a567e8c1bb4e53
+    public String status = "未被查看"; //: fae0b27c451c728867a567e8c1bb4e53
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
@@ -24,14 +31,6 @@ public class FileInfo {
         return filePath;
     }
 
-    String uploadTime = null;
-    String filePath;
-    String rawName = null; //: 孟骏清数据结构6.docx
-    Integer fileSize = null; //: 302334323
-    String formatName = null; //: 数据结构-1909班-19852331-第六次.docx
-    String fileContent = null; //: "!l.dfd"
-    String hash = null; //: fae0b27c451c728867a567e8c1bb4e53
-    String status = "未被查看"; //: fae0b27c451c728867a567e8c1bb4e53
 
     public FileInfo(String filePath) throws IOException {
         this.filePath = filePath;
@@ -60,25 +59,9 @@ public class FileInfo {
 //                .replace("{rawName}", rawName);
     }
 
-    public String getUploadTime() {
-        return uploadTime;
-    }
-
     public void setUploadTime() {
         // get current Date and Time
         this.uploadTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
-    }
-
-    public void setStuName(String stuName) {
-        this.stuName = stuName;
-    }
-
-    public void setFileSize(int fileSize) {
-        this.fileSize = fileSize;
-    }
-
-    public void setFormatName(String formatName) {
-        this.formatName = formatName;
     }
 
     private void setFileContent(String filePath) throws IOException {
@@ -95,28 +78,6 @@ public class FileInfo {
         return fileId;
     }
 
-    public void setFileId(String fileId) {
-        this.fileId = fileId;
-    }
-
-    public void setAssiId(String assiId) {
-        this.assiId = assiId;
-    }
-
-    public void setStuId(String stuId) {
-        this.stuId = stuId;
-    }
-
-
-    public String getStuName() {
-        return stuName;
-    }
-
-    public String getFileContent() {
-        return fileContent;
-    }
-
-
     public String getAssiId() {
         return assiId;
     }
@@ -125,25 +86,71 @@ public class FileInfo {
         return stuId;
     }
 
+    public String getStuName() {
+        return stuName;
+    }
+
+    public String getUploadTime() {
+        return uploadTime;
+    }
 
     public String getRawName() {
         return rawName;
-    }
-
-    public String getFormatName() {
-        return formatName;
-    }
-
-
-    public String getHash() {
-        return hash;
     }
 
     public Integer getFileSize() {
         return fileSize;
     }
 
+    public String getFormatName() {
+        return formatName;
+    }
+
+    public String getFileContent() {
+        return fileContent;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
     public String getStatus() {
         return status;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public void setAssiId(String assiId) {
+        this.assiId = assiId;
+    }
+
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
+    }
+
+    public void setUploadTime(String uploadTime) {
+        this.uploadTime = uploadTime;
+    }
+
+    public void setFileSize(Integer fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public void setFormatName(String formatName) {
+        this.formatName = formatName;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setStuId(String stuId) {
+        this.stuId = stuId;
     }
 }

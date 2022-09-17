@@ -3,7 +3,7 @@ package com.mengjq.assignmentsubmission.bin;
 import com.mengjq.assignmentsubmission.core.EchoCLI;
 import com.mengjq.assignmentsubmission.core.FilesOpr;
 import com.mengjq.assignmentsubmission.core.Menu;
-import com.mengjq.assignmentsubmission.service.MongoDBService;
+import com.mengjq.assignmentsubmission.core.mongoDBOpr;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class main_Args {
     public static void main(String[] args, Document stuInfo, EchoCLI echoCLI,
-                            MongoDBService mongoDBService, FilesOpr filesOpr) {
+                            mongoDBOpr mongoDBService, FilesOpr filesOpr) {
     //identify user by mac address  > Document{{"userId":"19852331","deviceId":"00:00:00:00:00:00","assignmentId":"1909","fileName":"test.txt","fileSize":0,"fileType":"txt","filePath":"test.txt","fileHash":""}}
     if (stuInfo == null) {
         echoCLI.noStuInfo();

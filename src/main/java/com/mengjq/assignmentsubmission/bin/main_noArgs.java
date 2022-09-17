@@ -3,8 +3,8 @@ package com.mengjq.assignmentsubmission.bin;
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.core.EchoCLI;
 import com.mengjq.assignmentsubmission.core.Menu;
-import com.mengjq.assignmentsubmission.pojo.DeviceReg;
-import com.mengjq.assignmentsubmission.service.MongoDBService;
+import com.mengjq.assignmentsubmission.pojo.DeviceInfo;
+import com.mengjq.assignmentsubmission.core.mongoDBOpr;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 
@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class main_noArgs {
     // 配置界面 Configure CLI
     public static void main(Document stuInfo, EchoCLI echoCLI,
-                            MongoDBService mongoDBService, DeviceReg deviceReg,
+                            mongoDBOpr mongoDBService, DeviceInfo deviceInfo,
                             Config conf) {
 
         Scanner sc = new Scanner(System.in);
@@ -27,7 +27,7 @@ public class main_noArgs {
             int select = Menu.selectSettingMenu(settingMenu);
             switch (select) {
                 case 1:
-                    mongoDBService.regCurrentDevice(deviceReg);
+                    mongoDBService.regCurrentDevice(deviceInfo);
                     break;
                 case 2:
                     if (stuInfo == null) {
