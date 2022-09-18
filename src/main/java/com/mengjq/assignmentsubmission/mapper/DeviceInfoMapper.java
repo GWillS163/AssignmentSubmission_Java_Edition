@@ -6,6 +6,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public class DeviceInfoMapper {
     public MongoCollection<Document> deviceRegDBCollection;
 
@@ -26,9 +28,8 @@ public class DeviceInfoMapper {
     }
 
     // Update
-    public boolean update(String deviceId, Document newDocument) {
-        deviceRegDBCollection.updateOne(new Document().append("deviceId", deviceId), newDocument);
-        return true;
+    public void update(String deviceMAC, Document newDocument) {
+        deviceRegDBCollection.updateOne(eq("deviceMAC", deviceMAC), new Document("$set", newDocument));
     }
 
     // Request

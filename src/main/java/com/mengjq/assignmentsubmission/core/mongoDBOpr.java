@@ -49,7 +49,7 @@ public class mongoDBOpr {
                 continue;
             }
             // 智能补全用户信息 用户确认 - intelligent complement user confirm the stuId
-            Document document = studentInfoService.findStuInfoByStuId(eq("stuId", stuId)).first();
+            Document document = studentInfoService.findStuInfoByBson(eq("stuId", stuId)).first();
             if (Objects.isNull(document)) {
                 System.out.println("Your stuId is not exist.");
                 continue;
@@ -86,11 +86,11 @@ public class mongoDBOpr {
 
     // 通过设备MAC地址获得用户信息 - Get user information
     public Document tryGetStuInfoByMAC(String deviceMAC) {
-        Document deviceInfo = deviceInfoService.tryGetStudentInfo("deviceMAC", deviceMAC);
-        if (deviceInfo == null) {
+        String currentDeviceUserId = deviceInfoService.findUserIdByDeviceMAC(deviceMAC);
+        if (currentDeviceUserId == null) {
             return null;
         }
-        return studentInfoService.findStuInfoByStuId(eq("stuId", deviceInfo.get("stuId"))).first();
+        return studentInfoService.findStuInfoByBson(eq("stuId", currentDeviceUserId)).first();
     }
 
     // 批量上传文件 Batch upload files
@@ -98,10 +98,6 @@ public class mongoDBOpr {
         return fileInfoService.uploadFiles(fileInfos);
     }
 
-    // 测试接口 Test Interface
-    public Document getTestAssignment() {
-        return assignmentInfoService.getTestAssignment();
-    }
 
     // main_Args 获得正在收集的作业 - get the assignment that is being collected
     public FindIterable<Document> getCollectingAssignments() {

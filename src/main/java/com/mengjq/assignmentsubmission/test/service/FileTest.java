@@ -7,42 +7,32 @@ import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mengjq.assignmentsubmission.service.FileInfoService;
 import com.mongodb.client.*;
 import org.bson.Document;
+import org.junit.Test;
 
 import java.io.IOException;
 
 public class FileTest {
+    Config conf = new Config();
+    FilesOpr filesOpr = new FilesOpr();
+    EchoCLI echoCLI= new EchoCLI();
+    MongoClient mongoClient = MongoClients.create(conf.mongodbUrl);
+    MongoDatabase clazzDB = mongoClient.getDatabase(conf.clazz);
+    FileInfoService fileInfoService = new FileInfoService(clazzDB, conf.fileInfoDB);
+
     public static void main(String[] args) {
-        Config conf = new Config();
-        MongoClient mongoClient = MongoClients.create(conf.mongodbUrl);
-        MongoDatabase clazzDB = mongoClient.getDatabase(conf.clazz);
 
-        FileInfoService fileInfoService = new FileInfoService(clazzDB, conf.fileInfoDB);
-        FilesOpr filesOpr = new FilesOpr();
-        EchoCLI echoCLI= new EchoCLI();
+    }
 
+    @Test
+    public void getAllSubmittedFileInfo(){
         // getAllSubmittedFileInfo
         System.out.println("getAllSubmittedFileInfo:");
         FindIterable<Document> allSubmitStatusDocs = fileInfoService.getAllSubmittedFileInfo();
         echoCLI.showMySubmitStatus(allSubmitStatusDocs);
+    }
 
-
-        // uploadFiles
-        System.out.println("upload file:");
-        FileInfo fileInfo = null;
-        try {
-            fileInfo = new FileInfo("D:\\system\\桌面\\Client_submit_mainV3.3 测试版.exe");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        filesOpr.addFileInfoList(fileInfo);
-        fileInfoService.uploadFiles(filesOpr.getFileInfoList());
-//
-        // download file
-//        System.out.println("download file:");
-//        fileInfoService.downloadFile("rawName","readme.md",
-//                "D:\\Project\\AssignmentSubmission_Java_Edition\\src\\main\\java\\com\\mengjq\\assignmentsubmission\\");
-//        System.out.println("download file done!");
-
+    @Test
+    public void getMySubmittedInfo(){
         // getMySubmitStatus
         System.out.println("getMySubmitStatus:");
         FindIterable<Document> mySubmitStatusDocs = fileInfoService.getMySubmitStatus("19852331");
@@ -50,5 +40,28 @@ public class FileTest {
 
     }
 
+    // a test function for upload
+    @Test
+    public void uploadFile() throws IOException {
+        // uploadFiles
+        System.out.println("upload file:");
+        FileInfo fileInfo = new FileInfo("D:\\system\\Downloads\\孟骏清发票.jpg");
+        fileInfo.setStuName("赵云龙3");
+
+        filesOpr.addFileInfoList(fileInfo);
+        echoCLI.loading("uploading...");
+        fileInfoService.uploadFiles(filesOpr.getFileInfoList());
+    }
+
+    // a test function for download
+    @Test
+    public void downloadFile() throws IOException {
+//         download file
+        System.out.println("download file:");
+        fileInfoService.downloadFile("stuName","赵云龙",
+                "D:\\Project\\AssignmentSubmission_Java_Edition\\src\\main\\java\\com\\mengjq\\assignmentsubmission\\");
+        System.out.println("download file done!");
+
+    }
 
 }

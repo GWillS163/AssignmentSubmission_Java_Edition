@@ -8,14 +8,13 @@ import org.bson.conversions.Bson;
 import java.util.SortedSet;
 
 public class StudentInfoService {
-
     public MongoCollection<Document> studInfoDBCollection;
 
     public StudentInfoService(MongoDatabase clazzDB, String studentInfo) {
         studInfoDBCollection = clazzDB.getCollection(studentInfo);
 //        System.out.println(studInfoDBCollection.getNamespace());
     }
-    // TODO:not 测试 yet
+
     // getStudentInfo
     public Document getStudentInfo(String stuId) {
         // query by stuId
@@ -23,7 +22,7 @@ public class StudentInfoService {
                 new Document().append("stuId", stuId)).first();
     }
 
-    public FindIterable<Document> findStuInfoByStuId(Bson eq) {
+    public FindIterable<Document> findStuInfoByBson(Bson eq) {
         return studInfoDBCollection.find(eq);
     }
 

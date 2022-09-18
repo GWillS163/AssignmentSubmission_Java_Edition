@@ -10,8 +10,6 @@ import org.bson.Document;
 import java.util.Base64;
 import java.util.List;
 
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
@@ -29,7 +27,7 @@ public class FileInfoService {
     public FindIterable<Document> getMySubmitStatus(String stuId){
         // TODO: 也要在另一个存储桶内查询
 
-        return fileInfoMapper.request((Document) eq("stuId", stuId))
+        return fileInfoMapper.request((Document) new Document().append("stuId", stuId))
                 .projection(fields(
                         exclude("_id", "fileContent", "stuId", "stuName")
                 ))
@@ -40,8 +38,10 @@ public class FileInfoService {
     public FindIterable<Document> getAllSubmittedFileInfo() {
         // TODO: 范围文件时，两种查询格式也需要一致。
         // query all the file status form mongoDB
-        return fileInfoMapper.request()
-                .projection(fields(exclude("_id", "fileContent")))
+        return   fileInfoMapper.request()
+                .projection(fields(exclude("_id", "fileContent")
+//                        , group("stuId")
+                ))
                 .sort(ascending("userId"));
     }
 
@@ -58,6 +58,7 @@ public class FileInfoService {
 //    }
 
     // 上传文件 - 上传文件到mongoDB
+    // TODO: 上传应该用存储桶
     public boolean uploadFiles(List<FileInfo> fileInfos) {
         // calculate the time of upload
         long start = System.currentTimeMillis();
@@ -86,14 +87,17 @@ public class FileInfoService {
 
     // 下载文件 - download the file form mongoDB
     public boolean downloadFile(String fileId, String value, String path) {
-        FindIterable<Document> docs = fileInfoMapper.request((Document) eq(fileId, value));
+        FindIterable<Document> docs = fileInfoMapper.request(new Document().append(fileId, value));
         if(docs.cursor().hasNext()) {
             Document doc = docs.first();
             assert doc != null;
             String fileContent = doc.getString("fileContent");
             byte[] bytes = Base64.getDecoder().decode(fileContent);
-            String formatName = doc.getString("formatName");
-            boolean saveStatus = saveBinaryData(bytes, path + formatName);
+            String fileName = doc.getString("formatName");
+            if (fileName == null) {
+                fileName = doc.getString("rawName");
+            }
+            boolean saveStatus = saveBinaryData(bytes, path + fileName);
 
             if (saveStatus) {
                 System.out.println("download file success!");

@@ -8,7 +8,7 @@ import static com.mongodb.client.model.Sorts.ascending;
 import com.mengjq.assignmentsubmission.mapper.AssignmentInfoMapper;
 
 public class AssignmentInfoService {
-    AssignmentInfoMapper assignmentInfoMapper;
+    public AssignmentInfoMapper assignmentInfoMapper;
 
     public AssignmentInfoService(MongoDatabase clazzDB, String assignmentInfo) {
         assignmentInfoMapper = new AssignmentInfoMapper(clazzDB, assignmentInfo);
@@ -25,10 +25,4 @@ public class AssignmentInfoService {
                 .sort(ascending("DDL"));
     }
 
-    // 获得测试作业
-    public Document getTestAssignment() {
-        return assignmentInfoMapper.request(
-                new Document().append("assiId", "14"))
-                .first();
-    }
 }

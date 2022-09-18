@@ -4,6 +4,10 @@ import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mongodb.client.*;
 import org.bson.Document;
 
+import static com.mongodb.client.model.Accumulators.first;
+import static com.mongodb.client.model.Aggregates.group;
+import static com.mongodb.client.model.Projections.fields;
+
 public class FileInfoMapper {
     public MongoCollection<Document> fileInfoDBCollection;
 

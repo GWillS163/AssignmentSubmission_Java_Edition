@@ -70,6 +70,10 @@ public class EchoCLI {
 
     // TODO: version2 实现聚合查询， 应该使用聚合函数来实现
     public void showAllSubmitStatus(FindIterable<Document> assignments, FindIterable<Document> fileInfos, FindIterable<Document> stuInfos){
+        // 人名  A作业  B作业  C作业
+        // 孟    未交   已交   已交
+        // 张    未交   未交   已交
+
         // Headers for the table
         if (!assignments.cursor().hasNext()) {
             System.out.println("No assignments");
