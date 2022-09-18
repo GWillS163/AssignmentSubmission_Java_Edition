@@ -1,5 +1,6 @@
 package com.mengjq.assignmentsubmission.service;
 
+import com.mengjq.assignmentsubmission.core.EchoCLI;
 import com.mengjq.assignmentsubmission.mapper.FileInfoMapper;
 import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mengjq.assignmentsubmission.util.MongodbGFS;
@@ -17,6 +18,7 @@ import static com.mongodb.client.model.Sorts.descending;
 public class FileInfoService {
     private MongodbGFS mgfs;
     public FileInfoMapper fileInfoMapper;
+    EchoCLI echoCLI = new EchoCLI();
 
     public FileInfoService(MongoDatabase clazzDB, String fileInfo) {
         fileInfoMapper = new FileInfoMapper(clazzDB, fileInfo);
@@ -77,6 +79,7 @@ public class FileInfoService {
                 continue;
             }
 
+            echoCLI.loading("uploading file: " + fileInfo.getRawName());
             fileInfoMapper.create(fileInfo);
             long end = System.currentTimeMillis();
             System.out.println("uploadFiles time: " + (end - start)/1000 + "s");

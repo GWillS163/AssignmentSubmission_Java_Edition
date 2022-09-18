@@ -7,7 +7,7 @@ import com.mengjq.assignmentsubmission.core.FilesOpr;
 import org.bson.Document;
 
 public class main {
-    public main(String[] args) {
+    public static void main(String[] args) {
 
         EchoCLI echoCLI = new EchoCLI();
         echoCLI.loading("Initializing");
@@ -27,11 +27,11 @@ public class main {
 
         if (args.length == 0) {
             // 信息配置页面
-            main_noArgs.main(stuInfo, echoCLI, mongoDBService,
+            main_noArgs.run(stuInfo, echoCLI, mongoDBService,
                     deviceInfo, conf);
         }else{
             // 作业发送页面 Send Menu Function
-            main_Args.main(args, stuInfo, echoCLI, mongoDBService, filesOpr);
+            main_Args.run(args, stuInfo, echoCLI, mongoDBService, filesOpr);
         }
 
     }

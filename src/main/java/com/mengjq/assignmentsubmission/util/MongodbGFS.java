@@ -30,19 +30,13 @@ import com.mongodb.client.gridfs.model.GridFSUploadOptions;
  *
  */
 public class MongodbGFS {
-
-    private MongoClient mongoClient;
-
     // 我们进行操作的数据库
+    private MongoClient mongoClient;
     private MongoDatabase clazzDB;
-
-    // bucket
     private GridFSBucket gridFSBucket;
 
     // 初始化
-    {
-        Config conf = new Config();
-
+    {   Config conf = new Config();
         MongoClient mongoClient = MongoClients.create(conf.mongodbUrl);
         clazzDB = mongoClient.getDatabase(conf.clazz);
         // 自定义bucket name
@@ -121,12 +115,9 @@ public class MongodbGFS {
         String filename = url.substring((url.lastIndexOf("/") + 1), url.length());
         try {
             options = new GridFSUploadOptions().chunkSizeBytes(358400).metadata(new Document("type", "presentation"));
-
             // 存储文件，第一个参数是文件名称，第二个是输入流,第三个是参数设置
             gfsupload = gridFSBucket.openUploadStream(filename, options);
-
             byte[] data = Files.readAllBytes(new File(url).toPath());
-
             gfsupload.write(data);
 
         } catch (FileNotFoundException e) {
@@ -143,17 +134,14 @@ public class MongodbGFS {
 
     // 查询所有储存的文件
 //    public List<String> findAllFile() {
-//        List<String> filenames = new ArrayList<>();
-//
+//        List<String> list = new ArrayList<String>();
 //        gridFSBucket.find().forEach(new Block<GridFSFile>() {
-//
 //            @Override
 //            public void apply(GridFSFile t) {
-//                filenames.add(t.getFilename());
+//                list.add(t.getFilename());
 //            }
 //        });
-//
-//        return filenames;
+//        return list;
 //    }
 
     // 删除文件
@@ -167,17 +155,18 @@ public class MongodbGFS {
     }
 
     // 将数据库中的文件读出到磁盘上，参数，文件路径
-    public String downFile(String url, ObjectId id) {
+    public String downFile(String localPath, ObjectId id) {
         FileOutputStream out = null;
         String result=null;
         try {
-            out = new FileOutputStream(new File(url));
+            out = new FileOutputStream(new File(localPath));
             gridFSBucket.downloadToStream(id, out);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }finally {
             try {
+                assert out != null;
                 out.close();
                 result=out.toString();
             } catch (IOException e) {

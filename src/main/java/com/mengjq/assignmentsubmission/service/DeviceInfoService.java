@@ -6,6 +6,8 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.util.Objects;
+
 
 public class DeviceInfoService {
     public DeviceInfoMapper deviceInfoMapper;
@@ -32,11 +34,11 @@ public class DeviceInfoService {
 
     // 通过字段 获得用户的设备信息
     public String findUserIdByDeviceMAC(String deviceMAC) {
-        FindIterable<Document> res = deviceInfoMapper.request(new Document("deviceMAC", deviceMAC));
-        if (res == null || res.first() == null) {
+        Document res = deviceInfoMapper.request(new Document("deviceMAC", deviceMAC)).first();
+        if (res == null ) {
             return null;
         } else {
-            return res.first().get("userId").toString();
+            return res.getString("stuId");
         }
     }
 

@@ -113,14 +113,14 @@ public class EchoCLI {
                 System.out.println();
             }
             // Type 2: query data has no stuId
-            System.out.println("-----------no status---------------");
+            System.out.println("----------👇no status👇---------------");
             FindIterable<Document> filesOfstuId = fileInfos.filter(eq("stuId", null));
             for (Document fileInfo : filesOfstuId) {
                 System.out.println(fileInfo.getString("stuName"));
                 System.out.printf("\t%-10s", fileInfo.getString("uploadTime"));
                 System.out.printf("\t%-10s", fileInfo.getString("rawName"));
             }
-            System.out.println('\n' + "-----------no status---------------");
+            System.out.println('\n' + "--------☝️no status☝️-------------");
             // Ver1: status
             //孟骏清
             //	2022-7-8 10:29:13	孟骏清-19852331.xlsx孟骏清

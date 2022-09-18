@@ -12,9 +12,9 @@ import java.util.Scanner;
 
 public class main_noArgs {
     // 配置界面 Configure CLI
-    public static void main(Document stuInfo, EchoCLI echoCLI,
-                            mongoDBOpr mongoDBService, DeviceInfo deviceInfo,
-                            Config conf) {
+    public static void run(Document stuInfo, EchoCLI echoCLI,
+                           mongoDBOpr mongoDBService, DeviceInfo deviceInfo,
+                           Config conf) {
 
         Scanner sc = new Scanner(System.in);
         while (true) {

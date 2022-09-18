@@ -19,9 +19,6 @@ public class FileTest {
     MongoDatabase clazzDB = mongoClient.getDatabase(conf.clazz);
     FileInfoService fileInfoService = new FileInfoService(clazzDB, conf.fileInfoDB);
 
-    public static void main(String[] args) {
-
-    }
 
     @Test
     public void getAllSubmittedFileInfo(){

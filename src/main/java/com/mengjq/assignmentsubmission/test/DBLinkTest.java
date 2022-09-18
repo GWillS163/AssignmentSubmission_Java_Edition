@@ -3,39 +3,49 @@ package com.mengjq.assignmentsubmission.test;
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mongodb.client.*;
 import org.bson.Document;
+import org.junit.Test;
 
 import static com.mongodb.client.model.Projections.exclude;
 import static com.mongodb.client.model.Projections.fields;
 import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
 
+// 测试数据库连接性
 public class DBLinkTest {
-    // 测试数据库连接性
-    public static void main(String[] args) {
-        Config conf = new Config();
+    Config conf = new Config();
 
-        MongoClient mongoClient = MongoClients.create(conf.mongodbUrl);
-        MongoDatabase clazzDB = mongoClient.getDatabase(conf.clazz);
+    MongoClient mongoClient = MongoClients.create(conf.mongodbUrl);
+    MongoDatabase clazzDB = mongoClient.getDatabase(conf.clazz);
 
-        // Assignment DB
+    @Test
+    // Assignment DB Test
+    public void getAssignmentInfo(){
         System.out.println("Assignment DB Link Test");
         MongoCollection<Document> assignDBCollection = clazzDB.getCollection(conf.assignmentInfoDB);
         System.out.println(assignDBCollection.find().first());
+    }
 
+    @Test
+    // DeviceReg Link Test
+    public void getDeviceRegInfo(){
+        System.out.println("DeviceReg DB Link Test");
+        MongoCollection<Document> deviceRegDBCollection = clazzDB.getCollection(conf.deviceRegDB);
+        System.out.println(deviceRegDBCollection.find().first());
+    }
 
-//        DeviceReg Link Test
-        System.out.println("\nDeviceReg DB Link Test");
-        MongoCollection<Document> devicRegDBCollection = clazzDB.getCollection(conf.deviceRegDB);
-//        devicRegDBCollection.insertOne(new Document("userId", "123456789"));
-        System.out.println(devicRegDBCollection.find().first());
-
-
-        // StudentDB  Link Test
-        System.out.println("\nStudentDB Link Test");
+    @Test
+    // StudentDB  Link Test
+    public void getStudentInfo(){
+        System.out.println("Student DB Link Test");
         MongoCollection<Document> studentDBCollection = clazzDB.getCollection(conf.studentInfoDB);
         Document doc = studentDBCollection.find(new Document("stuId", "19852331")).first();
         System.out.println(doc);
+    }
 
+    // fileInfoDB  Link Test
+    @Test
+    public void getFileInfo(){
+        System.out.println("FileInfo DB Link Test");
 
         // TODO: query all the file group by stuId
         MongoCollection<Document> fileDBCollection = clazzDB.getCollection(conf.fileInfoDB);
@@ -48,7 +58,5 @@ public class DBLinkTest {
         for (Document doc1 : docs) {
             System.out.println(doc1);
         }
-
-
     }
 }

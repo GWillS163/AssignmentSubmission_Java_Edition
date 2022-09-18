@@ -47,6 +47,16 @@ public class MongoOprTest {
         }
     }
 
+    @Test
+    public void tryGetStuInfoByMAC(){
+        System.out.println("通过MAC地址获取学生信息");
+        Document stuInfo = mongoDBService.tryGetStuInfoByMAC("00-FF-5D-B1-E2-98");
+        System.out.println(stuInfo);
+    }
+
+
+
+
     //聚合查询
     @Test
     public void groupMongod() {
