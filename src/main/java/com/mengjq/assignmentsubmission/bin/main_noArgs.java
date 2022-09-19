@@ -27,14 +27,14 @@ public class main_noArgs {
             int select = Menu.selectSettingMenu(settingMenu);
             switch (select) {
                 case 1:
-                    mongoDBService.regCurrentDevice(deviceInfo);
+                    stuInfo = mongoDBService.regCurrentDevice(deviceInfo);
                     break;
                 case 2:
                     if (stuInfo == null) {
+//                        echoCLI.showError("setting stuId first!");
                         echoCLI.showError("请先配置个人信息！");
                         break;
                     }
-//                        System.out.println(stuInfo);
                     FindIterable<Document> myFiles = mongoDBService.getMySubmittedFileInfo(stuInfo.getString("stuId"));
                     echoCLI.showMySubmitStatus(myFiles);
                     break;
@@ -45,19 +45,21 @@ public class main_noArgs {
                     echoCLI.showAllSubmitStatus(assignments, allFiles, allStuInfo);
                     break;
                 case 4:
-                    conf.getMenuAbout();
+                    echoCLI.getMenuAbout();
                     break;
                 case 5:
                     System.exit(0);
                     return;
                 default:
-                    System.out.println("Invalid input!");
+//                    System.out.println("Invalid input!");
+                    System.out.println("无效输入!");
                     break;
 
             }
             // please input any key to continue.
-            System.out.println("Please input any key to continue.");
-            sc.nextLine();
+//            System.out.println("Please input any key to continue.");
+            System.out.println("按任意键继续.");
+            sc.next();
         }
     }
 }

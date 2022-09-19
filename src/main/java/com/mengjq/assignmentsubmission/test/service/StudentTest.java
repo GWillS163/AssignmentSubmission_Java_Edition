@@ -23,7 +23,7 @@ public class StudentTest {
     public void findStuInfoByBson(){
         // findStuInfoByBson
         System.out.println("findStuInfoByBson");
-        System.out.println(studentInfoService.findStuInfoByBson(new Document().append("stuId", "19852331")).first());
+        System.out.println(studentInfoService.findStuInfoByBson("stuId", "19852331").first());
     }
 
     @Test

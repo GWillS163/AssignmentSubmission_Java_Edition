@@ -1,5 +1,10 @@
-package com.mengjq.assignmentsubmission.service;
+package com.mengjq.assignmentsubmission.test;
+import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.util.MongodbGFS;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -13,7 +18,11 @@ public class MongodbGFSTest {
 
     @Before
     public void MongodbGFSTest() {
-        mgfs=new MongodbGFS();
+        Config config = new Config();
+        MongoClient mongoClient = MongoClients.create(config.mongodbUrl);
+        MongoDatabase clazzDB = mongoClient.getDatabase(config.clazz);
+//        gridFSBucket = GridFSBuckets.create(clazzDB);
+        mgfs=new MongodbGFS(clazzDB, "files");
     }
 
     @Test

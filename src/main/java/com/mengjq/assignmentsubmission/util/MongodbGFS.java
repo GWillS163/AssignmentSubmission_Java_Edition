@@ -30,20 +30,14 @@ import com.mongodb.client.gridfs.model.GridFSUploadOptions;
  *
  */
 public class MongodbGFS {
-    // 我们进行操作的数据库
-    private MongoClient mongoClient;
-    private MongoDatabase clazzDB;
     private GridFSBucket gridFSBucket;
 
     // 初始化
-    {   Config conf = new Config();
-        MongoClient mongoClient = MongoClients.create(conf.mongodbUrl);
-        clazzDB = mongoClient.getDatabase(conf.clazz);
+    public MongodbGFS(MongoDatabase clazzDB, String filesDB) {
         // 自定义bucket name
-        gridFSBucket = GridFSBuckets.create(clazzDB, "Files");
-        // 使用默认的名字
-        // gridFSBucket=GridFSBuckets.create(useDatabase);
+        gridFSBucket = GridFSBuckets.create(clazzDB, filesDB);
     }
+
     public boolean uploadByGFS(String url) {
         InputStream ins = null;
         ObjectId fileid = null;
@@ -74,13 +68,14 @@ public class MongodbGFS {
     // 将文件存储到mongodb,返回存储完成后的ObjectID
     public ObjectId saveFile(String url) {
         InputStream ins = null;
+        GridFSUploadOptions options = null;
         ObjectId fileid = null;
         // 配置一些参数
-        GridFSUploadOptions options = null;
+
         // 截取文件名
         String filename = url.substring((url.lastIndexOf("\\") + 1), url.length());
         try {
-            ins = new FileInputStream(new File(url));
+            ins = new FileInputStream(url);
             options = new GridFSUploadOptions().chunkSizeBytes(303200).metadata(new Document("type", "presentation"));
 
             // 存储文件，第一个参数是文件名称，第二个是输入流,第三个是参数设置
@@ -158,8 +153,9 @@ public class MongodbGFS {
     public String downFile(String localPath, ObjectId id) {
         FileOutputStream out = null;
         String result=null;
+        // combine localPath and filename
         try {
-            out = new FileOutputStream(new File(localPath));
+            out = new FileOutputStream(localPath);
             gridFSBucket.downloadToStream(id, out);
 
         } catch (FileNotFoundException e) {

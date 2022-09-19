@@ -23,6 +23,14 @@ public class FileInfo {
     public String hash = null; //: fae0b27c451c728867a567e8c1bb4e53
     public String status = "未被查看"; //: fae0b27c451c728867a567e8c1bb4e53
 
+    public FileInfo(String filePath)  {
+        this.filePath = filePath;
+        setRawName(filePath);
+        setFileSize(filePath);
+//        setFileContent(filePath);
+//        setHash();
+        setUploadTime();
+    }
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
@@ -32,14 +40,6 @@ public class FileInfo {
     }
 
 
-    public FileInfo(String filePath) throws IOException {
-        this.filePath = filePath;
-        setRawName(filePath);
-        setFileSize(filePath);
-        setFileContent(filePath);
-        setHash();
-        setUploadTime();
-    }
 
     private void setRawName(String path){
         String[] pathArray = path.split("\\\\");

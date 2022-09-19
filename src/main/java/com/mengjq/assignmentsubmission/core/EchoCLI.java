@@ -68,7 +68,6 @@ public class EchoCLI {
         System.out.println("Total: " + num + " submissions");
     }
 
-    // TODO: version2 实现聚合查询， 应该使用聚合函数来实现
     public void showAllSubmitStatus(FindIterable<Document> assignments, FindIterable<Document> fileInfos, FindIterable<Document> stuInfos){
         // 人名  A作业  B作业  C作业
         // 孟    未交   已交   已交
@@ -134,7 +133,6 @@ public class EchoCLI {
             //	2022-07-09 19:18:32	readme.md
             //-----------no status---------------
 
-            //TODO: Version 2 : show the table with the status of each student
 //            List<Document> otherFiles = new ArrayList<>();
 //            // iterable fileInfos
 ////            for (Document fileInfo : fileInfos) {
@@ -225,15 +223,16 @@ public class EchoCLI {
     }
 
     public void loading(String loadingStr) {
-        for (int i = 0; i < 10; i++) {
-            System.out.print("\r" +loadingStr + new String(new char[i]).replace("\0", "."));
+        // print the loading string animation in the console until the loading is finished
+        for (int i = 0; i < 3; i++) {
+            System.out.print(loadingStr);
             try {
-                Thread.sleep(100);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            System.out.print("\b\b\b");
         }
-        System.out.println(" Done!");
     }
 
     public void noStuInfo() {
@@ -242,5 +241,15 @@ public class EchoCLI {
 
     public void fileUpOver() {
         System.out.println("上交处理结束！");
+    }
+
+    public void getMenuAbout(){
+        System.out.println("Release Version: 1.0.0");
+        System.out.println("Author: Mengjq");
+        System.out.println("Github Address:\n" +
+                "Java Desktop Edition: git@github.com:GWillS163/AssignmentSubmission_Java_Edition.git\n" +
+                "Java Web Edition: ***\n" +
+                "Python Desktop Edition: ***\n" +
+                "Python Web Edition: ***");
     }
 }

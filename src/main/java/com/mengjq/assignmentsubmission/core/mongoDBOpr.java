@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
 
@@ -36,7 +35,7 @@ public class mongoDBOpr {
     }
 
     // 设置菜单 - Setting Menu
-    public void regCurrentDevice(DeviceInfo deviceInfo) {
+    public Document regCurrentDevice(DeviceInfo deviceInfo) {
         while (true) {
             // Scan the user input
             Scanner sc = new Scanner(System.in);
@@ -49,12 +48,12 @@ public class mongoDBOpr {
                 continue;
             }
             // 智能补全用户信息 用户确认 - intelligent complement user confirm the stuId
-            Document document = studentInfoService.findStuInfoByBson(eq("stuId", stuId)).first();
-            if (Objects.isNull(document)) {
+            Document stuInfoDoc = studentInfoService.findStuInfoByBson("stuId", stuId).first();
+            if (Objects.isNull(stuInfoDoc)) {
                 System.out.println("Your stuId is not exist.");
                 continue;
             } else {
-                System.out.println("your name is " + document.getString("stuName"));
+                System.out.println("your name is " + stuInfoDoc.getString("stuName"));
             }
             // confirm query data
             System.out.println("Are you sure? (y/n)");
@@ -62,7 +61,7 @@ public class mongoDBOpr {
             if (Objects.equals(confirm, "y")) {
                 deviceInfo.setStuId(stuId);
                 deviceInfoService.regCurrentDevice(deviceInfo);
-                return;
+                return stuInfoDoc;
             }
         }
     }
@@ -90,17 +89,22 @@ public class mongoDBOpr {
         if (currentDeviceUserId == null) {
             return null;
         }
-        return studentInfoService.findStuInfoByBson(eq("stuId", currentDeviceUserId)).first();
+        return studentInfoService.findStuInfoByBson("stuId", currentDeviceUserId).first();
     }
-
-    // 批量上传文件 Batch upload files
-    public boolean uploadFiles(List<FileInfo> fileInfos) {
-        return fileInfoService.uploadFiles(fileInfos);
-    }
-
 
     // main_Args 获得正在收集的作业 - get the assignment that is being collected
     public FindIterable<Document> getCollectingAssignments() {
         return assignmentInfoService.getCollectingAssignments();
     }
+
+    // 批量上传文件 - Batch upload files
+    public boolean uploadFiles(List<FileInfo> fileInfos) {
+        return fileInfoService.uploadFiles(fileInfos);
+    }
+
+    // 下载作业 - Download assignments
+    public void downloadFiles(String stuId, String assignmentId, String path) {
+        fileInfoService.downloadFiles(stuId, assignmentId, path);
+    }
+
 }

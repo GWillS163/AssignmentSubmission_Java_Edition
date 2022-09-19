@@ -3,9 +3,9 @@ package com.mengjq.assignmentsubmission.test;
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.core.EchoCLI;
 import com.mengjq.assignmentsubmission.core.mongoDBOpr;
+import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import org.bson.Document;
 import org.junit.Test;
@@ -25,7 +25,6 @@ public class MongoOprTest {
 
     @Test
     public void getAllSubmittedFileInfo(){
-        //TODO: Fixing the bug 2022-9-18
         System.out.println("所有学生 提交的所有人作业 状态");
         FindIterable<Document> assignments = mongoDBService.getCollectingAssignments();
         FindIterable<Document> allStuInfo = mongoDBService.getAllStuInfo();
@@ -46,6 +45,27 @@ public class MongoOprTest {
             System.out.println(doc);
         }
     }
+    @Test
+    public void uploadFiles(){
+        // 2022-9-17 23:05:32 OK
+        System.out.println("上传文件");
+        // create a list of FileInfo to insert into the database
+        List<FileInfo> fileInfoList = new ArrayList<>();
+        fileInfoList
+//                .add(new FileInfo("D:\\system\\Downloads\\DCZZ_导出组织-20220913.xlsx"))
+                .add(new FileInfo("D:\\system\\Downloads\\494424303.mp3"));
+
+        mongoDBService.uploadFiles(fileInfoList);
+    }
+
+    @Test
+    public void downloadFiles(){
+        // 2022-9-19 23:29:46 OK
+        System.out.println("下载文件");
+        mongoDBService.downloadFiles("rawName","494424303.mp3",
+                "D:\\");
+    }
+
 
     @Test
     public void tryGetStuInfoByMAC(){

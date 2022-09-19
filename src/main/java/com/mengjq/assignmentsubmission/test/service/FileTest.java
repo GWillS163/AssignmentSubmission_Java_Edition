@@ -55,8 +55,8 @@ public class FileTest {
     public void downloadFile() throws IOException {
 //         download file
         System.out.println("download file:");
-        fileInfoService.downloadFile("stuName","赵云龙",
-                "D:\\Project\\AssignmentSubmission_Java_Edition\\src\\main\\java\\com\\mengjq\\assignmentsubmission\\");
+        boolean downStatus = fileInfoService.downloadFiles("rawName","494424303.mp3",
+                "D:\\494424303.mp3");
         System.out.println("download file done!");
 
     }

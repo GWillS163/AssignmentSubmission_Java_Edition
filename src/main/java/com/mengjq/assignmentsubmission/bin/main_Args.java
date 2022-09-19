@@ -4,6 +4,7 @@ import com.mengjq.assignmentsubmission.core.EchoCLI;
 import com.mengjq.assignmentsubmission.core.FilesOpr;
 import com.mengjq.assignmentsubmission.core.Menu;
 import com.mengjq.assignmentsubmission.core.mongoDBOpr;
+import com.mengjq.assignmentsubmission.pojo.DeviceInfo;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public class main_Args {
 
     public static void run(String[] args, Document stuInfo, EchoCLI echoCLI,
-                           mongoDBOpr mongoDBService, FilesOpr filesOpr) {
+                           mongoDBOpr mongoDBService, DeviceInfo deviceInfo, FilesOpr filesOpr) {
         for (String arg : args) {
             System.out.println("正在提交"+ arg);
         }
@@ -21,16 +22,19 @@ public class main_Args {
             echoCLI.noStuInfo();
             return;
         }
+        //1. 记录本次登录 - Record this login
+        // TODO: usingHistory 内记录登录数据
+        // Login 19852331 孟骏清 BA-D8-88-A9-8B-9F 2022-9-19 21:22:59
 
-        //2. 展示最新Assignment数据
+        //2. 展示最新Assignment数据 - Show the latest assignment data
         FindIterable<Document> assignments =  mongoDBService.getCollectingAssignments();
                 echoCLI.showAssignments(assignments);
                 filesOpr.setBasicFileInfo(args);
 
-        //3. [Record] 依照用户选择改名
+        //3. 依照用户选择改名 - Rename the file according to the user's choice
             ArrayList<String> selectList = Menu.selectRenameMenu(assignments, filesOpr, stuInfo);
 
-        //5. [Record] 上交 Files
+        //5. 上交 Files - Submit files
         boolean res = mongoDBService.uploadFiles(filesOpr.fileInfoList);
         if(res){
             echoCLI.fileUpOver();
