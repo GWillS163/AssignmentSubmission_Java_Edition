@@ -1,9 +1,9 @@
 package com.mengjq.assignmentsubmission.bin;
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.core.EchoCLI;
+import com.mengjq.assignmentsubmission.core.FilesOpr;
 import com.mengjq.assignmentsubmission.core.mongoDBOpr;
 import com.mengjq.assignmentsubmission.pojo.DeviceInfo;
-import com.mengjq.assignmentsubmission.core.FilesOpr;
 import org.bson.Document;
 
 public class main {
@@ -18,8 +18,10 @@ public class main {
 
         // 读取云端配置信息 - Read Cloud Config
         Document stuInfo = mongoDBService.tryGetStuInfoByMAC(deviceInfo.getDeviceMAC());
+
         // 输出读取到的配置信息 - print student value info
         echoCLI.showStuInfo(stuInfo);
+        // clear the CLI all of outputs
 
         if (args.length == 0) {
             // 信息配置页面 - Information Configure Page

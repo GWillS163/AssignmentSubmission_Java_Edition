@@ -2,7 +2,6 @@ package com.mengjq.assignmentsubmission.mapper;
 
 import com.mengjq.assignmentsubmission.pojo.AssignmentInfo;
 import com.mongodb.client.*;
-import jdk.nashorn.internal.ir.Assignment;
 import org.bson.Document;
 
 public class AssignmentInfoMapper {

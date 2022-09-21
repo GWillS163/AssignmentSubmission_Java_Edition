@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import static com.mongodb.client.model.Projections.exclude;
 import static com.mongodb.client.model.Projections.fields;
-import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
 
 // 测试数据库连接性
@@ -24,6 +23,7 @@ public class DBLinkTest {
         MongoCollection<Document> assignDBCollection = clazzDB.getCollection(conf.assignmentInfoDB);
         System.out.println(assignDBCollection.find().first());
     }
+
 
     @Test
     // DeviceReg Link Test

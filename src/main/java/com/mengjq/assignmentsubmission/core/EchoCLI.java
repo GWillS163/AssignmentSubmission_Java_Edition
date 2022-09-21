@@ -6,6 +6,11 @@ import org.bson.Document;
 import static com.mongodb.client.model.Filters.eq;
 
 public class EchoCLI {
+    public static void clearCLI() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     public void showAssignments(FindIterable<Document> assignments){
         if (!assignments.cursor().hasNext()) {
             System.out.println("No assignments");
