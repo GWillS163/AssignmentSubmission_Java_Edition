@@ -1,6 +1,7 @@
 package com.mengjq.assignmentsubmission.test;
 
 import com.mengjq.assignmentsubmission.conf.Config;
+import com.mengjq.assignmentsubmission.conf.LanguageSet;
 import com.mengjq.assignmentsubmission.core.EchoCLI;
 import com.mengjq.assignmentsubmission.core.mongoDBOpr;
 import com.mengjq.assignmentsubmission.pojo.FileInfo;
@@ -25,6 +26,7 @@ public class MongoOprTest {
 
     @Test
     public void getAllSubmittedFileInfo(){
+        LanguageSet languageSet = new LanguageSet(conf.LanguageNationCode);
         System.out.println("所有学生 提交的所有人作业 状态");
         FindIterable<Document> assignments = mongoDBService.getCollectingAssignments();
         FindIterable<Document> allStuInfo = mongoDBService.getAllStuInfo();
@@ -33,7 +35,7 @@ public class MongoOprTest {
         for (Document doc : allFiles) {
             System.out.println(doc);
         }
-        echoCLI.showAllSubmitStatus(assignments, allFiles, allStuInfo);
+        echoCLI.showAllSubmitStatus(assignments, allFiles, allStuInfo, languageSet);
     }
 
     @Test

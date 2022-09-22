@@ -46,7 +46,6 @@ public class FileTest {
         fileInfo.setStuName("赵云龙3");
 
         filesOpr.addFileInfoList(fileInfo);
-        echoCLI.loading("uploading...");
         fileInfoService.uploadFiles(filesOpr.getFileInfoList());
     }
 
