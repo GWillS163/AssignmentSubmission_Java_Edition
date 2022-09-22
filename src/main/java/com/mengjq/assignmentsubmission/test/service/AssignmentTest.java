@@ -11,7 +11,7 @@ import org.bson.Document;
 import org.junit.Test;
 
 public class AssignmentTest {
-    Config conf = new Config();
+    Config conf = new Config().initConfigByLocal();
     EchoCLI echoCLI = new EchoCLI();
 
     MongoClient mongoClient = MongoClients.create(conf.mongodbUrl);
@@ -27,7 +27,8 @@ public class AssignmentTest {
     }
     @Test
     public void getCollectingAssignments(){
-        assignmentInfoService.getCollectingAssignments();
+        System.out.println(conf.toString());
+        System.out.println(assignmentInfoService.getCollectingAssignments().first());
     }
 
     @Test

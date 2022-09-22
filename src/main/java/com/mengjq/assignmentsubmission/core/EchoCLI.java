@@ -1,14 +1,39 @@
 package com.mengjq.assignmentsubmission.core;
-
-
+import com.mengjq.assignmentsubmission.conf.LanguageSet;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 import static com.mongodb.client.model.Filters.eq;
 
 public class EchoCLI {
-    public static void clearCLI() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+    public void colorPrint(String str, String color) {
+        // turn color to the cli color code like \033[0m
+        switch (color) {
+            case "red":
+                color = "\033[31m";
+                break;
+            case "green":
+                color = "\033[32m";
+                break;
+            case "yellow":
+                color = "\033[33m";
+                break;
+            case "blue":
+                color = "\033[34m";
+                break;
+            case "purple":
+                color = "\033[35m";
+                break;
+            case "cyan":
+                color = "\033[36m";
+                break;
+            case "white":
+                color = "\033[37m";
+                break;
+            default:
+                color = "\033[0m";
+                break;
+        }
+        System.out.println(color + str + "\033[0m");
     }
 
     public void showAssignments(FindIterable<Document> assignments){
@@ -17,16 +42,16 @@ public class EchoCLI {
             return;
         }
         System.out.println("___________________________");
-        String[] headers = {"assiId", "briefName", "describe", "fileNameRule", "DDL", "status"};
-        System.out.printf("%-10s %-15s %-20s %-20s %-20s %-10s\n", headers);
+        String[] headers = {"assiId", "DDL", "briefName", "describe",  "status"};
+        System.out.printf("%-10s %-20s %-20s %-20s %-10s\n", headers);
         System.out.println("￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣");
         for (Document assignment : assignments) {
             // print the value of headers with equal length
-            System.out.printf("%-10s %-15s %-20s %-20s %-20s %-10s\n",
+            System.out.printf("%-10s %-20s %-20s %-20s %-10s\n",
                     assignment.getString("assiId"),
                     assignment.getString("briefName"),
                     assignment.getString("describe"),
-                    assignment.getString("fileNameRule"),
+//                    assignment.getString("fileNameRule"),
                     assignment.getString("DDL"),
                     assignment.getString("status"));
         }
@@ -73,14 +98,14 @@ public class EchoCLI {
         System.out.println("Total: " + num + " submissions");
     }
 
-    public void showAllSubmitStatus(FindIterable<Document> assignments, FindIterable<Document> fileInfos, FindIterable<Document> stuInfos){
+    public void showAllSubmitStatus(FindIterable<Document> assignments, FindIterable<Document> fileInfos, FindIterable<Document> stuInfos, LanguageSet languageSet){
         // 人名  A作业  B作业  C作业
         // 孟    未交   已交   已交
         // 张    未交   未交   已交
 
         // Headers for the table
         if (!assignments.cursor().hasNext()) {
-            System.out.println("No assignments");
+            System.out.println(languageSet.echoCLIShowAllStatusNoAssign);
         }else {
             // show the briefName of assignments as header with equal length
             System.out.println("--------------------------");
@@ -92,20 +117,20 @@ public class EchoCLI {
 
         // show all of fileInfos
         if (!fileInfos.cursor().hasNext()) {
-            System.out.println("No submissions");
+            System.out.println(languageSet.echoCLIShowAllStatusNoFile);
             return;
         }
 
         // There are stuInfos and fileInfos
         if (!stuInfos.cursor().hasNext()) {
-            System.out.println("No students found");
+            System.out.println(languageSet.echoCLIShowAllStatusNoStu);
             showAssignments(assignments);
         } else {
 
             // Type 1: has Correct stuId
             for (Document stuInfo : stuInfos) {
-                FindIterable<Document> filesOfstuId = fileInfos.filter(new Document("stuId", stuInfo.getString("stuId")));
-                for (Document fileInfo : filesOfstuId) {
+                FindIterable<Document> filesOfStuId = fileInfos.filter(new Document("stuId", stuInfo.getString("stuId")));
+                for (Document fileInfo : filesOfStuId) {
                     System.out.println(fileInfo.getString("stuName") + " " + fileInfo.getString("stuId"));
                     System.out.printf("\t%-10s", fileInfo.getString("uploadTime"));
                     System.out.printf("\t%-10s", fileInfo.getString("formatName"));
@@ -117,14 +142,18 @@ public class EchoCLI {
                 System.out.println();
             }
             // Type 2: query data has no stuId
-            System.out.println("----------👇no status👇---------------");
+            System.out.print("-------------------------------------👇");
+            System.out.print(languageSet.echoCLIShowAllStatusUnknown);
+            System.out.println("👇-------------------------------------");
             FindIterable<Document> filesOfstuId = fileInfos.filter(eq("stuId", null));
             for (Document fileInfo : filesOfstuId) {
-                System.out.println(fileInfo.getString("stuName"));
+                System.out.println(fileInfo.getString("stuName") + ":");
                 System.out.printf("\t%-10s", fileInfo.getString("uploadTime"));
                 System.out.printf("\t%-10s", fileInfo.getString("rawName"));
             }
-            System.out.println('\n' + "--------☝️no status☝️-------------");
+            System.out.print("\n-------------------------------------👆");
+            System.out.print(languageSet.echoCLIShowAllStatusUnknown);
+            System.out.println("👆-------------------------------------");
             // Ver1: status
             //孟骏清
             //	2022-7-8 10:29:13	孟骏清-19852331.xlsx孟骏清
@@ -210,51 +239,29 @@ public class EchoCLI {
         System.out.print(s);
     }
 
-    public void showError(String s) {
-        System.out.println("[Error]: " + s);
-    }
 
     public void showStuInfo(Document stuInfo) {
-        System.out.println("Current student: ");
+        System.out.print("Current student: ");
         if (stuInfo == null) {
-            System.out.println("No student selected");
+            colorPrint("No student selected", "red");
         } else {
-            System.out.println(
-                    "\tstuId: " + stuInfo.getString("stuId") + "\n" +
-                    "\tstuName: " + stuInfo.getString("stuName") + "\n" +
-                    "\tclazz: " + stuInfo.getString("clazz")
-            );
+            colorPrint("" + stuInfo.getString("stuId") +
+                    "\t" + stuInfo.getString("stuName")  +
+                    "\t" + stuInfo.getString("clazz"), "green");
         }
     }
 
-    public void loading(String loadingStr) {
-        // print the loading string animation in the console until the loading is finished
-        for (int i = 0; i < 3; i++) {
-            System.out.print(loadingStr);
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.print("\b\b\b");
-        }
+
+    public void noStuInfo(LanguageSet languageSet) {
+        System.out.println(languageSet.setStuInfoFirst);
     }
 
-    public void noStuInfo() {
-        System.out.println("请先配置个人信息！");
+    public void fileUpOver(LanguageSet languageSet) {
+        System.out.println(languageSet.sendUploadOver);
     }
 
-    public void fileUpOver() {
-        System.out.println("上交处理结束！");
+    public void getMenuAbout(LanguageSet languageSet){
+        System.out.println(languageSet.menuAbout);
     }
 
-    public void getMenuAbout(){
-        System.out.println("Release Version: 1.0.0");
-        System.out.println("Author: Mengjq");
-        System.out.println("Github Address:\n" +
-                "Java Desktop Edition: git@github.com:GWillS163/AssignmentSubmission_Java_Edition.git\n" +
-                "Java Web Edition: ***\n" +
-                "Python Desktop Edition: ***\n" +
-                "Python Web Edition: ***");
-    }
 }

@@ -2,10 +2,13 @@ package com.mengjq.assignmentsubmission.service;
 
 import com.mengjq.assignmentsubmission.mapper.DeviceInfoMapper;
 import com.mengjq.assignmentsubmission.pojo.DeviceInfo;
+import com.mongodb.MongoSocketOpenException;
+import com.mongodb.MongoTimeoutException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.net.ConnectException;
 import java.util.Objects;
 
 
@@ -38,12 +41,21 @@ public class DeviceInfoService {
 
     // 通过字段 获得用户的设备信息
     public String findUserIdByDeviceMAC(String deviceMAC) {
-        Document res = deviceInfoMapper.request(new Document("deviceMAC", deviceMAC)).first();
-        if (res == null ) {
+        Document res = null;
+        try {
+            res = deviceInfoMapper.request(new Document("deviceMAC", deviceMAC)).first();
+        } catch (MongoSocketOpenException e) {
+            e.printStackTrace();
+            System.out.println("Link to MongoDB failed!");
+            return  null;
+        } catch ( MongoTimeoutException e) {
+            e.printStackTrace();
+            System.out.println("Link to MongoDB timeout!");
             return null;
-        } else {
-            return res.getString("stuId");
         }
+        if (res != null ) {
+            return res.getString("stuId");
+        } return null;
     }
 
 }

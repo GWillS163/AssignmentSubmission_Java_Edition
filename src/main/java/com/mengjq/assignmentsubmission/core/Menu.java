@@ -1,6 +1,8 @@
 package com.mengjq.assignmentsubmission.core;
 
+import com.mengjq.assignmentsubmission.conf.LanguageSet;
 import com.mengjq.assignmentsubmission.pojo.FileInfo;
+import com.mengjq.assignmentsubmission.conf.LanguageSet;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -10,15 +12,8 @@ import java.util.Scanner;
 
 // add comments here
 public class Menu {
-    // create a menuList to store all the menu items
-//    private static List<String> menuList = new ArrayList<String>();
 
-    public static void setMenuList(List<String> menuList) {
-//        menu.menuList = menuList;
-        Collections.addAll(menuList, "1. Input Student Information", "2. Query Submission Status", "3. Exit");
-    }
-
-    public static ArrayList<String> selectRenameMenu(Iterable<Document> assignments, FilesOpr filesOpr, Document stuInfo) {
+    public static ArrayList<String> selectRenameMenu(Iterable<Document> assignments, FilesOpr filesOpr, Document stuInfo, LanguageSet languageSet) {
         ArrayList<String> selectList = new ArrayList<>();
         // create a list to store all the assignment assiId
         ArrayList<String> assiIdList = new ArrayList<>();
@@ -30,12 +25,11 @@ public class Menu {
         // iterate the filesOpr.getFileList() to get the file name
         for (FileInfo fileInfo : filesOpr.fileInfoList) {
             while (true){
-                System.out.println("Which assignments fit with :" +
+                System.out.println(languageSet.menuRenameSelectPrompt +
                         "\n\t" + fileInfo.getFilePath());
-                System.out.println("\tPlease input the assiId you want to rename:");
+                System.out.println(languageSet.menuPlzInputAssiId);
                 String assiId = sc.nextLine();
 
-                //TODO: assiId 需要随机生成
                 if (assiIdList.contains(assiId)) {
                     assignments.forEach(assignment -> {
                         if (assignment.getString("assiId").equals(assiId)) {
@@ -51,39 +45,49 @@ public class Menu {
                     selectList.add(assiId);
                     break;
                 } else {
-                    System.out.println("The assiId is not exist!");
+                    System.out.println(languageSet.menuAssiIdNotExist);
                 }
             }
         }
         return selectList;
     }
 
-    public static Integer selectLoop(int start, int end) {
+    public static Integer selectLoop(int start, int end, LanguageSet languageSet) {
         while (true) {
             // get nextLine from user by Scanner
             Scanner scanner = new Scanner(System.in);
-            int select = scanner.nextInt();
+            int select = 0;
+            try {
+                select = scanner.nextInt();
+            } catch (Exception e) {
+                System.out.println(languageSet.selectLoopSelectInvalid);
+                continue;
+            }
             // check if the input is valid
             if (select >= start && select <= end) {
-                System.out.println("You selected :" + select);
                 return select;
-            } else {
-                System.out.println("Invalid input, please try again.\r");
             }
+            System.out.println(languageSet.selectLoopSelectInvalid);
         }
     }
 
-    public static int selectSettingMenu(String[] settings) {
-        while(true){
-            ArrayList<Integer> selectList = new ArrayList<>();
-            for (String setting : settings) {
-                System.out.println(setting);
-            }
-
-            return selectLoop(0, settings.length);
+    public static int selectSettingMenu(LanguageSet languageSet) {
+        String[] settings = {
+                languageSet.menu1title,
+                languageSet.menu2title,
+                languageSet.menu3title,
+                languageSet.menu4title,
+                languageSet.menu5title,
+            };
+        System.out.println("_______________________________");
+        for (String setting : settings) {
+            System.out.println(setting);
         }
+        System.out.println("_______________________________");
+        return selectLoop(0, settings.length, languageSet);
     }
-
 }
+
+
 
 

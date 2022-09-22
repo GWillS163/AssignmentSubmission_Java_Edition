@@ -2,15 +2,61 @@
 [![Build Status](https://app.travis-ci.com/GWillS163/AssignmentSubmission_Java_Edition.svg?branch=master)](https://app.travis-ci.com/GWillS163/AssignmentSubmission_Java_Edition)
 [![Coveralls](https://img.shields.io/coveralls/xcatliu/pagic.svg)](https://coveralls.io/github/xcatliu/pagic)
 
+# AssignmentSubmission_Java_Edition 介绍
+设计的桌面端用来方便的收集/提交文件
+
+# 解决痛点
+用来师生间收集指定作业（文件）
+场景1：多个老师指定不同的作业格式及具有规则的文件名，学生需要提交自己的多个作业以相应的文件名重命名给多个老师。
+例如：
+A老师要求学生提交的文件名为：学号_姓名_作业1.docx 学号_姓名_作业2.docx
+B老师要求学生提交的文件名为：学号_作业B.docx
+
+# 使用方式
+1. 首次下载或需要更改信息时，学生双击打开桌面垃圾桶，按提示输入学号，回车保存退出程序。
+2. 每次使用时，将(多个)文件拖拽至本垃圾桶，将会打开软件。
+3. 按屏幕提示输入每个文件指定的序号。
+4. 回车即可发送文件。
+
+# 主要功能
+1. 收集并重命名文件
+2. 作业数据持久化
+3. 可查询/修改/删除 云端作业数据
+
+## 安全功能
+由于方便了学生配置，仅需要输入学号认证，得到个人信息。因此可能存在其他学生代替上交的可能性，因此增加了两张数据表。
+1. 设备信息表： 存储设备信息及所属当前用户
+2. 操作记录表： 操作记录（设备，学号，操作时间，操作IP, 操作类型[登录/更新设备/提交文件], 相关文件）
+
+# 技术栈 & 赞助资源
+- 在线配置： ConfigCat by GitHub
+- 代码辅助: Copilot 插件 by GitHub
+- 云数据库: MongoDB Altas by MongoDB Official.
+
+以上这些是非常棒的技术资源并且几乎是免费的，感谢这些技术的提供方.
+
+# 系列项目介绍
+Java Desktop Edition 之前，还有Python Desktop Edition的版本。
+Python Desktop Edition:
+
+Java Desktop Edition的主要作用是解决了Python 版的一些问题如仅能单向提交无法查询删除等，并且提供了更好的体验。
+
+每隔一段时间我再回看自己的代码，发现自己的代码质量还是有很大的提升空间，所以总是在不断的重构代码，以提高代码质量。
+
+
+# 个性化安装
+1. 下载源码: git clone ...
+2. 安装依赖: mvn install
+3. 查看本项目wiki, 了解如何配置本项目。
+4. 打包运行项目
+
+
+# About AssignmentSubmission_Java_Edition
 ## The reconstruction of the assignment submission tool.
 
 before this, there are one tool developed by python using related libs.
 but there were some things I encountered that were a hassle. one of the things is GUI when using GUI to develop, the consequential file size will be bigger than 50MB, but there in fact only 9MB before using GUI.
 
-### The Target of Develop Java Edition
-
-1. newer than before! :D
-2. more features!
 
 # 说明 (Chinese)
 pojo: 实体类
