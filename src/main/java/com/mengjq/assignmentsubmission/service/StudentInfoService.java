@@ -12,7 +12,7 @@ public class StudentInfoService {
 //        System.out.println(studInfoDBCollection.getNamespace());
     }
 
-    // getStudentInfo
+    // 获得学生信息 - getStudentInfo
     public Document getStudentInfo(String stuId) {
         // query by stuId
         return studentInfoMapper.request(

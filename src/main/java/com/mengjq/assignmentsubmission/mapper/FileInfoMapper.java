@@ -7,6 +7,8 @@ import com.mongodb.client.gridfs.GridFSBuckets;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
+
 import static com.mongodb.client.model.Aggregates.group;
 import static com.mongodb.client.model.Projections.fields;
 
@@ -22,52 +24,36 @@ public class FileInfoMapper {
     }
 
     public FileInfoMapper(MongoDatabase clazzDB, String fileInfoDB) {
-        // 通过已有clazzDB获取数据库表
+        // connect to collection if not exists , create it
+        if (!clazzDB.listCollectionNames().into(new ArrayList<>()).contains(fileInfoDB)) {
+            clazzDB.createCollection(fileInfoDB);
+        }
         fileInfoDBCollection = clazzDB.getCollection(fileInfoDB);
-
-        GridFSBuckets.create(clazzDB, "files");
-        mGFS = new MongodbGFS(clazzDB, "files");
+        String bucketName = "Files";
+        GridFSBuckets.create(clazzDB, bucketName);
+        mGFS = new MongodbGFS(clazzDB, bucketName);
     }
 
     // add file info to database
-    public void create(FileInfo fileInfo) {
-        Document document = new Document()
-                .append("assiId",      fileInfo.fileId)
-                .append("fileContent", fileInfo.fileContent)
-                .append("fileSize",    fileInfo.fileSize )
-                .append("stuId",      fileInfo.stuId )
-                .append("stuName",   fileInfo.stuName)
-                .append("rawName",    fileInfo.rawName)
-                .append("formatName", fileInfo.formatName)
-                .append("hash",       fileInfo.hash)
-                .append("status",     fileInfo.status)
-                .append("uploadTime", fileInfo.uploadTime);
-        fileInfoDBCollection.insertOne(document);
+    public void createByDirect(Document doc) {
+        fileInfoDBCollection.insertOne(doc);
     }
 
-    public void createByGFS(FileInfo fileInfo) {
+    public void createByGFS(String filePath, Document doc) {
         // 1. insert to GFS first
-        ObjectId gfsId=mGFS.saveFile(fileInfo.filePath);
-        System.out.println(gfsId);
-        Document document = new Document()
-                .append("assiId",      fileInfo.fileId)
-                .append("fileGFS_id", gfsId)
-                .append("fileSize",    fileInfo.fileSize )
-                .append("stuId",      fileInfo.stuId )
-                .append("stuName",   fileInfo.stuName)
-                .append("rawName",    fileInfo.rawName)
-                .append("formatName", fileInfo.formatName)
-                .append("hash",       fileInfo.hash)
-                .append("status",     fileInfo.status)
-                .append("uploadTime", fileInfo.uploadTime);
+        ObjectId gfsId=mGFS.saveFile(filePath);
+//        System.out.println(gfsId);
         // 2. insert to fileInfoDB with GFS id
-        fileInfoDBCollection.insertOne(document);
+        doc.append("gfsId", gfsId);
+        fileInfoDBCollection.insertOne(doc);
     }
 
     // Update
     public void update(String fileId, Document newDocument) {
         // TODO: update file info in database
-        fileInfoDBCollection.updateOne(new Document().append("fileId", fileId),newDocument);
+        fileInfoDBCollection.updateOne(
+                new Document().append("fileId", fileId),
+                newDocument);
 //                new Document().append("$set", new Document().append("fileId", fileId)));
     }
 
@@ -79,13 +65,14 @@ public class FileInfoMapper {
         return fileInfoDBCollection.find();
     }
 
-    // Delete
-    public void deleteFileInfo(String fileId) {
-        fileInfoDBCollection.deleteOne(new Document().append("fileId", fileId));
+    // Delete - new Document().append("fileId", fileId)
+    public void deleteFileInfo(Document doc) {
+        fileInfoDBCollection.deleteOne(doc);
 
     }
 
-    public void downloadByGFS( String path, ObjectId mGFS_id) {
+    // 特殊下载的实现方式 - 没有传入Document
+    public void downloadByGFS(String path, ObjectId mGFS_id) {
         mGFS.downFile(path, mGFS_id);
     }
 }

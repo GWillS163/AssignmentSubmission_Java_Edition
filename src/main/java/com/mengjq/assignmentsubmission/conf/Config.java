@@ -17,6 +17,7 @@ public class Config implements Callable<Config> {
     public String deviceRegDB;
     public String fileInfoDB;
     public String studentInfoDB;
+    public String oprInfoDB;
     public String clazz;
 
     // 控制面板 - Configure Panel
@@ -32,11 +33,13 @@ public class Config implements Callable<Config> {
         deviceRegDB = "DeviceReg";
         fileInfoDB = "FileInfo";
         studentInfoDB = "StudentInfo";
+        oprInfoDB = "OprInfo";
         clazz = "1909";
         LanguageNationCode = "cn";
         return this;
     }
 
+//    TODO: 没有增加OprInfo
     // 使用云测试配置 - Use Cloud Test Config
     private Config testConfig(){
         return initConfigByConfigCat("S5zaCCUpl0mE6YfDKBjcYw/4B5tPjF6FE61Dokh7HKCTQ");

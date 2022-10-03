@@ -4,6 +4,9 @@ import com.mengjq.assignmentsubmission.pojo.AssignmentInfo;
 import com.mongodb.client.*;
 import org.bson.Document;
 
+import java.util.ArrayList;
+
+// CURD - 传入完整的 document
 public class AssignmentInfoMapper {
     public MongoCollection<Document> assigmentInfoDBCollection;
 
@@ -15,27 +18,21 @@ public class AssignmentInfoMapper {
     }
 
     public AssignmentInfoMapper(MongoDatabase clazzDB, String assignmentInfo) {
-        // 通过已有clazzDB获取数据库表
+        // connect to collection if not exists , create it
+        if (!clazzDB.listCollectionNames().into(new ArrayList<>()).contains(assignmentInfo)) {
+            clazzDB.createCollection(assignmentInfo);
+        }
         assigmentInfoDBCollection = clazzDB.getCollection(assignmentInfo);
     }
 
-    // Server Upload Interface
-    public boolean create(AssignmentInfo document) {
-        assigmentInfoDBCollection.insertOne(new Document()
-                .append("assiId", document.nickName));
-//                .append("assiId", document.assiId)
-//                .append("assiName", document.assiName)
-//                .append("assiDesc", document.assiDesc)
-//                .append("assiFile", document.assiFile)
-//                .append("DDL", document.DDL)
-//                .append("status", document.status));
-        return true;
+    // Upload
+    public void create(Document doc) {
+        assigmentInfoDBCollection.insertOne(doc);
     }
 
-    // update
-    public boolean update(String assiId, Document newDocument) {
+    // Update
+    public void update(String assiId, Document newDocument) {
         assigmentInfoDBCollection.updateOne(new Document().append("assiId", assiId),newDocument);
-        return true;
     }
 
     // Request

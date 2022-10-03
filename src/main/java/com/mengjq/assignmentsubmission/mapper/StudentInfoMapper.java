@@ -5,11 +5,17 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.util.ArrayList;
 
+// CURD
 public class StudentInfoMapper {
     public MongoCollection<Document> studentInfoDBCollection;
 
     public StudentInfoMapper(MongoDatabase clazzDB, String studentInfo) {
+        // connect to collection if not exists , create it
+        if (!clazzDB.listCollectionNames().into(new ArrayList<>()).contains(studentInfo)) {
+            clazzDB.createCollection(studentInfo);
+        }
         studentInfoDBCollection = clazzDB.getCollection(studentInfo);
     }
 

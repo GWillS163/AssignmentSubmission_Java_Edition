@@ -25,7 +25,7 @@ public class DeviceInfoService {
         Document existDevice = deviceInfoMapper.request(new Document("deviceMAC", deviceInfo.getDeviceMAC())).first();
         // 如果当前设备不存在于数据库，则注册
         if (existDevice == null) {
-            deviceInfoMapper.create(deviceInfo);
+            deviceInfoMapper.create(deviceInfo.toDocument());
             // TODO: usingHistory Collection 内注册设备信息
             // register 19852331 孟骏清 0F-A1-CE-0C-1C-1C  2020-12-12 12:12:12
             System.out.println("DeviceReg success!");

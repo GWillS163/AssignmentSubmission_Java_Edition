@@ -153,4 +153,20 @@ public class FileInfo {
     public void setStuId(String stuId) {
         this.stuId = stuId;
     }
+
+    public Document toDocument(){
+        return  new Document()
+                .append("fileId", this.fileId)
+                .append("assiId", this.assiId)
+                .append("stuId", this.stuId)
+                .append("stuName", this.stuName)
+                .append("uploadTime", this.uploadTime)
+                .append("filePath", this.filePath)
+                .append("rawName", this.rawName)
+                .append("fileSize", this.fileSize)
+                .append("formatName", this.formatName)
+                .append("fileContent", this.fileContent)
+                .append("hash", this.hash)
+                .append("status", this.status);
+    }
 }

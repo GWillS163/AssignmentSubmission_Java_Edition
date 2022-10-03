@@ -52,7 +52,7 @@ public class FileInfoService {
         for (FileInfo fileInfo : fileInfos){
             System.out.println("uploading " + fileInfo.filePath);
             // print loading animation until finish
-            fileInfoMapper.createByGFS(fileInfo);
+            fileInfoMapper.createByGFS(fileInfo.filePath, fileInfo.toDocument());
             long end = System.currentTimeMillis();
             System.out.println("uploadFiles time: " + (end - start)/1000 + "s");
         }

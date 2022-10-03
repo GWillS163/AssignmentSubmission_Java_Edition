@@ -6,30 +6,33 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.util.ArrayList;
+
 import static com.mongodb.client.model.Filters.eq;
 
+// CURD
 public class DeviceInfoMapper {
     public MongoCollection<Document> deviceRegDBCollection;
 
     public DeviceInfoMapper(MongoDatabase clazzDB, String deviceReg) {
+        // connect to collection if not exists , create it
+        if (!clazzDB.listCollectionNames().into(new ArrayList<>()).contains(deviceReg)) {
+            clazzDB.createCollection(deviceReg);
+        }
         deviceRegDBCollection = clazzDB.getCollection(deviceReg);
     }
 
     // Create
-    public boolean create(DeviceInfo deviceInfo) {
-        Document deviceRegDoc = new Document()
-                .append("stuId", deviceInfo.getStuId())
-                .append("deviceMAC", deviceInfo.getDeviceMAC())
-                .append("deviceName", deviceInfo.getDeviceName())
-                .append("updateTime", deviceInfo.getRegisterTime())
-                .append("deviceUser", deviceInfo.getDeviceUser());
-        deviceRegDBCollection.insertOne(deviceRegDoc);
+    public boolean create(Document doc) {
+        deviceRegDBCollection.insertOne(doc);
         return true;
     }
 
     // Update
     public void update(String deviceMAC, Document newDocument) {
-        deviceRegDBCollection.updateOne(eq("deviceMAC", deviceMAC), new Document("$set", newDocument));
+        deviceRegDBCollection.updateOne(
+                eq("deviceMAC", deviceMAC),
+                new Document("$set", newDocument));
     }
 
     // Request

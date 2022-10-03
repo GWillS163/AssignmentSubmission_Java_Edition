@@ -1,6 +1,7 @@
 package com.mengjq.assignmentsubmission.pojo;
 
 import com.mengjq.assignmentsubmission.util.Device;
+import org.bson.Document;
 
 import java.util.Map;
 import java.util.Random;
@@ -10,6 +11,7 @@ public class DeviceInfo {
     String deviceUser;
     String deviceName;
     String deviceMAC;
+    String stuName;
     String stuId;
     String registerTime;
 
@@ -24,6 +26,15 @@ public class DeviceInfo {
     }
 
     public DeviceInfo() {
+        setAllDeviceInfo();
+        // get system time with format "yyyy-MM-dd HH:mm:ss"
+        registerTime = Device.getCurrentTime();
+        deviceId = RandomString();
+
+    }
+    public DeviceInfo(String stuNames, String stuIds) {
+        stuName = stuNames;
+        stuId = stuIds;
         setAllDeviceInfo();
         // get system time with format "yyyy-MM-dd HH:mm:ss"
         registerTime = Device.getCurrentTime();
@@ -77,5 +88,23 @@ public class DeviceInfo {
 
     public void setStuId(String stuId) {
         this.stuId = stuId;
+    }
+
+    public String getStuName() {
+        return stuName;
+    }
+
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
+    }
+
+    public Document toDocument() {
+        return new Document()
+                .append("stuId", stuId)
+                .append("stuName", stuName)
+                .append("deviceMAC", deviceMAC)
+                .append("deviceName", deviceName)
+                .append("updateTime", registerTime)
+                .append("deviceUser", deviceUser);
     }
 }
