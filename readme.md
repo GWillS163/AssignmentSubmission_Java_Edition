@@ -2,14 +2,22 @@
 [![Build Status](https://app.travis-ci.com/GWillS163/AssignmentSubmission_Java_Edition.svg?branch=master)](https://app.travis-ci.com/GWillS163/AssignmentSubmission_Java_Edition)
 [![Coveralls](https://img.shields.io/coveralls/xcatliu/pagic.svg)](https://coveralls.io/github/xcatliu/pagic)
 
-# AssignmentSubmission_Java_Edition 介绍
+# Content
+[简介](#简介)
+[Introduce](#Introduce)
+
+
+# 简介
 设计的桌面端用来方便的收集/提交文件
 
 # 解决痛点
 用来师生间收集指定作业（文件）
+
 场景1：多个老师指定不同的作业格式及具有规则的文件名，学生需要提交自己的多个作业以相应的文件名重命名给多个老师。
 例如：
+
 A老师要求学生提交的文件名为：学号_姓名_作业1.docx 学号_姓名_作业2.docx
+
 B老师要求学生提交的文件名为：学号_作业B.docx
 
 # 使用方式
@@ -50,7 +58,7 @@ Java Desktop Edition的主要作用是解决了Python 版的一些问题如仅�
 3. 查看本项目wiki, 了解如何配置本项目。
 4. 打包运行项目
 
-
+# Introduce
 # About AssignmentSubmission_Java_Edition
 ## The reconstruction of the assignment submission tool.
 
