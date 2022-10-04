@@ -3,7 +3,7 @@ package com.mengjq.assignmentsubmission.test;
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.conf.LanguageSet;
 import com.mengjq.assignmentsubmission.core.EchoCLI;
-import com.mengjq.assignmentsubmission.core.mongoDBOpr;
+import com.mengjq.assignmentsubmission.core.ServiceMainMongoDB;
 import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
@@ -16,9 +16,9 @@ import java.util.List;
 
 public class MongoOprTest {
     EchoCLI echoCLI = new EchoCLI();
-    Config conf = new Config();
-    mongoDBOpr mongoDBService = new mongoDBOpr(conf.mongodbUrl, conf.clazz,
-            conf.assignmentInfoDB, conf.deviceRegDB, conf.fileInfoDB, conf.studentInfoDB);
+    Config conf = new Config().initConfigByLocal();
+    ServiceMainMongoDB mongoDBService = new ServiceMainMongoDB(conf.mongodbUrl, conf.clazz,
+            conf.assignmentInfoDB, conf.deviceRegDB, conf.fileInfoDB, conf.studentInfoDB, conf.oprInfoDB);
 
     public static void main(String[] args) {
 
@@ -64,8 +64,12 @@ public class MongoOprTest {
     public void downloadFiles(){
         // 2022-9-19 23:29:46 OK
         System.out.println("下载文件");
-        mongoDBService.downloadFiles("rawName","494424303.mp3",
-                "D:\\");
+        Document doc = new Document();
+        doc.append("rawName", "494424303.mp3");
+        List<Integer> fileIds = new ArrayList<>();
+        fileIds.add(1);
+        fileIds.add(2);
+        mongoDBService.downloadFiles(fileIds,   "D:\\");
     }
 
 

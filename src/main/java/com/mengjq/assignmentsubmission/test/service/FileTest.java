@@ -10,9 +10,11 @@ import org.bson.Document;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class FileTest {
-    Config conf = new Config();
+    Config conf = new Config().initConfigByLocal();
     FilesOpr filesOpr = new FilesOpr();
     EchoCLI echoCLI= new EchoCLI();
     MongoClient mongoClient = MongoClients.create(conf.mongodbUrl);
@@ -42,22 +44,49 @@ public class FileTest {
     public void uploadFile() throws IOException {
         // uploadFiles
         System.out.println("upload file:");
-        FileInfo fileInfo = new FileInfo("D:\\system\\Downloads\\孟骏清发票.jpg");
-        fileInfo.setStuName("赵云龙3");
+//        FileInfo fileInfo = new FileInfo("D:\\system\\Downloads\\孟骏清发票.jpg");
+        FileInfo fileInfo2 = new FileInfo("D:\\Step1\\494424303.mp3");
+//        fileInfo.setStuName("孟骏清");
+        fileInfo2.setStuName("孟骏清");
 
-        filesOpr.addFileInfoList(fileInfo);
+//        filesOpr.addFileInfoList(fileInfo);
+        filesOpr.addFileInfoList(fileInfo2);
         fileInfoService.uploadFiles(filesOpr.getFileInfoList());
     }
 
     // a test function for download
     @Test
-    public void downloadFile() throws IOException {
+    public void downloadMany() throws IOException {
 //         download file
         System.out.println("download file:");
-        boolean downStatus = fileInfoService.downloadFiles("rawName","494424303.mp3",
-                "D:\\494424303.mp3");
+//        boolean downStatus = fileInfoService.downloadMany("stuName","孟骏清",
+//                "D:\\");
         System.out.println("download file done!");
 
+    }
+
+    @Test
+    public void getTime(){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Date d = new Date();
+        System.out.println(d.getTime());
+        System.out.println(d.toString());
+        System.out.println(localDateTime.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        System.out.println(localDateTime.toLocalTime());
+        System.out.println(localDateTime.toString());
+        System.out.println(localDateTime.toString().replace("T"," "));
+
+        // use localDateTime to get time with format "YYYY-MM-DD_HH-MM-SS"
+        String time = localDateTime.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+        System.out.println(time);
+//        System.out.println(d.());
+    }
+
+    @Test
+    public void deleteMany() {
+        System.out.println("delete file:");
+        fileInfoService.deleteMany("stuName","孟骏清");
+        System.out.println("delete file done!");
     }
 
 }

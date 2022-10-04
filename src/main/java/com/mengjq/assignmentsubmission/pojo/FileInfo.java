@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class FileInfo {
-    public String fileId = null; //: 01
+    public Integer fileId = null; //: 01
     public String assiId = null; //: 08
     public String stuId = null; //: 19852331
     public String stuName = null; //: 孟骏清
@@ -24,6 +24,8 @@ public class FileInfo {
     public String status = "未被查看"; //: fae0b27c451c728867a567e8c1bb4e53
 
     public FileInfo(String filePath)  {
+        // random id
+        this.fileId = (int)(Math.random()*1000);
         this.filePath = filePath;
         setRawName(filePath);
         setFileSize(filePath);
@@ -73,8 +75,7 @@ public class FileInfo {
         this.hash = Hash.getMD5(this.fileContent);
     }
 
-    // TODO: 也许不需要_ fileID 随机产生？
-    public String getFileId() {
+    public Integer getFileId() {
         return fileId;
     }
 
@@ -118,7 +119,7 @@ public class FileInfo {
         return status;
     }
 
-    public void setFileId(String fileId) {
+    public void setFileId(Integer fileId) {
         this.fileId = fileId;
     }
 

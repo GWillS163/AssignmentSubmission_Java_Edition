@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <exe4j version="8.0.1" transformSequenceNumber="3">
-  <directoryPresets config="D:/Project/AssignmentSubmission_Java_Edition/out/artifacts/AssignmentSubmmsion_jar" />
+  <directoryPresets config="D:/system/Pictures/bin/駿清清的垃圾分类图标‘" />
   <application name="AssignmentSubmmsion" distributionSourceDir="." />
-  <executable name="assignmentBeta2022-9-18" wrapperType="embed" executableDir="." redirectStderr="false" executableMode="console" />
+  <executable name="currentTest" wrapperType="embed" iconSet="true" iconFile="D:/system/Pictures/bin/駿清清的垃圾分类图标‘/qita.ico" executableDir="." redirectStderr="false" executableMode="console" />
   <java mainClass="com.mengjq.assignmentsubmission.bin.main" minVersion="1.8" allowBetaVM="true">
     <searchSequence>
       <registry />

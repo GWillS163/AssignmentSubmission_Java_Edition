@@ -107,4 +107,13 @@ public class DeviceInfo {
                 .append("updateTime", registerTime)
                 .append("deviceUser", deviceUser);
     }
+
+    public void updateStudentInfo(Document stuInfo) {
+        this.stuName = stuInfo.getString("stuName");
+        this.stuId = stuInfo.getString("stuId");
+    }
+    public void updateStudentInfo(StudentInfo stuInfo) {
+        this.stuName = stuInfo.getStuName();
+        this.stuId = stuInfo.getStuId();
+    }
 }

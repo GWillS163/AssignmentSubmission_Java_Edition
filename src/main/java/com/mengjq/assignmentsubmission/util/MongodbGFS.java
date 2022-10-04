@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mengjq.assignmentsubmission.conf.Config;
+import com.mongodb.MongoGridFSException;
 import com.mongodb.client.MongoClients;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -141,7 +142,11 @@ public class MongodbGFS {
 
     // 删除文件
     public void deleteFile(ObjectId id) {
-        gridFSBucket.delete(id);
+        try{
+            gridFSBucket.delete(id);
+        } catch (MongoGridFSException ignored){
+            System.out.println( "File not found: " + id.toString());
+        }
     }
 
     // 重命名文件
@@ -150,12 +155,13 @@ public class MongodbGFS {
     }
 
     // 将数据库中的文件读出到磁盘上，参数，文件路径
-    public String downFile(String localPath, ObjectId id) {
+    public String downOneFile(String localPath, ObjectId id) {
         FileOutputStream out = null;
         String result=null;
         // combine localPath and filename
         try {
             out = new FileOutputStream(localPath);
+
             gridFSBucket.downloadToStream(id, out);
 
         } catch (FileNotFoundException e) {

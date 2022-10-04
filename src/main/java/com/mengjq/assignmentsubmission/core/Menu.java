@@ -3,6 +3,7 @@ package com.mengjq.assignmentsubmission.core;
 import com.mengjq.assignmentsubmission.conf.LanguageSet;
 import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mengjq.assignmentsubmission.conf.LanguageSet;
+import com.mengjq.assignmentsubmission.pojo.StudentInfo;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.Scanner;
 // add comments here
 public class Menu {
 
-    public static ArrayList<String> selectRenameMenu(Iterable<Document> assignments, FilesOpr filesOpr, Document stuInfo, LanguageSet languageSet) {
+    public static ArrayList<String> selectRenameMenu(Iterable<Document> assignments, FilesOpr filesOpr, StudentInfo stuInfo, LanguageSet languageSet) {
         ArrayList<String> selectList = new ArrayList<>();
         // create a list to store all the assignment assiId
         ArrayList<String> assiIdList = new ArrayList<>();
@@ -33,13 +34,20 @@ public class Menu {
                 if (assiIdList.contains(assiId)) {
                     assignments.forEach(assignment -> {
                         if (assignment.getString("assiId").equals(assiId)) {
-                            fileInfo.setStuId(stuInfo.getString("stuId"));
-                            fileInfo.setStuName(stuInfo.getString("stuName"));
+                            fileInfo.setStuId(stuInfo.getStuId());
+                            fileInfo.setStuName(stuInfo.getStuName());
                             fileInfo.setAssiId(assiId);
-                            fileInfo.setFormatName(assignment.getString("briefName")
-                                    .replace("班级", stuInfo.getString("clazz"))
-                                    .replace("姓名", stuInfo.getString("stuName"))
-                                    .replace("学号", stuInfo.getString("stuId")));
+                            String fileName = assignment.getString("fileNameRule");
+                            if ( fileName.contains("班级")){
+                                fileName = fileName.replace("班级", stuInfo.getStuClazz());
+                            }
+                            if ( fileName.contains("学号")){
+                                fileName = fileName.replace("学号", stuInfo.getStuId());
+                            }
+                            if ( fileName.contains("姓名")){
+                                fileName = fileName.replace("姓名", stuInfo.getStuName());
+                            }
+                            fileInfo.setFormatName(fileName);
                         }
                     });
                     selectList.add(assiId);

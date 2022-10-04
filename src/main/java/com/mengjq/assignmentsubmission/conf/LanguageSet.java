@@ -22,6 +22,10 @@ public class LanguageSet {
     public String echoCLIShowAllStatusUnknown;
     public String menuAbout;
     public String sendModeAnyKeyContinue;
+    public String sendUploadFailed;
+    public String echoCLIMySubmitsInvalidInput;
+    public String echoCLIMySubmitsDeleteSuccess;
+    public String echoCLIMySubmitsDownSuccess;
 
     public LanguageSet(String nationCode){
     // I want to build a more Generic Tool, so I can help more people. :D
@@ -47,6 +51,7 @@ public class LanguageSet {
         sendModePrompt = "\t准备提交: ";
         setStuInfoFirst = "请先设置学生信息";
         sendUploadOver= "上交处理结束！";
+        sendUploadFailed = "上交失败！";
         menuRenameSelectPrompt = "这个作业对应于:";
         menuPlzInputAssiId = "\t请输入此作业对应的作业编号:";
         menuAssiIdNotExist = "\t作业编号不存在，请重新输入！";
@@ -63,7 +68,23 @@ public class LanguageSet {
         echoCLIShowAllStatusNoStu = "未找到学生信息";
         echoCLIShowAllStatusUnknown = "未知";
         sendModeAnyKeyContinue = "按任意键继续";
-        menuAbout = "Release Version: 1.0.0\n" +
+        echoCLIMySubmitsInvalidInput = "无效输入！\n" +
+                "删除作业: del [id(,id,id,...)]  \n" +
+                "\t例如: del 1 & del 2,5,2\n" +
+                "下载作业: down [id(,id,id,...)]  \n" +
+                "\t例如: down 1, down 2,5,2\n" +
+                "退出: exit \n";
+        echoCLIMySubmitsDeleteSuccess = "删除成功！";
+        echoCLIMySubmitsDownSuccess = "下载成功！";
+        menuAbout = "\n" +
+                "\n" +
+                "     _            _      ____        _     \n" +
+                "    / \\   ___ ___(_)    / ___| _   _| |__  \n" +
+                "   / _ \\ / __/ __| |____\\___ \\| | | | '_ \\ \n" +
+                "  / ___ \\\\__ \\__ \\ |_____|__) | |_| | |_) |\n" +
+                " /_/   \\_\\___/___/_|    |____/ \\__,_|_.__/ \n" +
+                "" +
+                "Release Version: 1.0.0\n" +
                 "Author: Mengjq\n" +
                 "Github:\n" +
                 "Java Desktop Edition: git@github.com:GWillS163/AssignmentSubmission_Java_Edition.git\n" +
@@ -80,6 +101,7 @@ public class LanguageSet {
         setStuInfoFirst = "Please set student info first";
         menuRenameSelectPrompt = "Which assignments fit with :";
         sendUploadOver = "upload finished!";
+        sendUploadFailed = "upload failed!";
         menuPlzInputAssiId = "\tPlease input the assiId you want to rename:";
         menuAssiIdNotExist = "\tThe assiId is not exist! input again!";
         selectLoopSelected = "Selected:";
@@ -95,7 +117,17 @@ public class LanguageSet {
         echoCLIShowAllStatusNoStu = "No student info found";
         echoCLIShowAllStatusUnknown = "Unknown";
         sendModeAnyKeyContinue = "Press any key to continue";
-        menuAbout = "Release Version: 1.0.0\n" +
+        menuAbout = "/***\n" +
+                " *                                                                                                                                                                                                                         \n" +
+                " *          _/_/                        _/                                                            _/            _/_/_/            _/                                        _/                                         \n" +
+                " *       _/    _/    _/_/_/    _/_/_/        _/_/_/  _/_/_/    _/_/_/  _/_/      _/_/    _/_/_/    _/_/_/_/      _/        _/    _/  _/_/_/    _/_/_/  _/_/    _/_/_/  _/_/          _/_/_/    _/_/_/    _/_/    _/_/_/    \n" +
+                " *      _/_/_/_/  _/_/      _/_/      _/  _/    _/  _/    _/  _/    _/    _/  _/_/_/_/  _/    _/    _/            _/_/    _/    _/  _/    _/  _/    _/    _/  _/    _/    _/  _/  _/_/      _/_/      _/    _/  _/    _/   \n" +
+                " *     _/    _/      _/_/      _/_/  _/  _/    _/  _/    _/  _/    _/    _/  _/        _/    _/    _/                _/  _/    _/  _/    _/  _/    _/    _/  _/    _/    _/  _/      _/_/      _/_/  _/    _/  _/    _/    \n" +
+                " *    _/    _/  _/_/_/    _/_/_/    _/    _/_/_/  _/    _/  _/    _/    _/    _/_/_/  _/    _/      _/_/      _/_/_/      _/_/_/  _/_/_/    _/    _/    _/  _/    _/    _/  _/  _/_/_/    _/_/_/      _/_/    _/    _/     \n" +
+                " *                                           _/                                                                                                                                                                            \n" +
+                " *                                      _/_/                                                                                                                                                                               \n" +
+                " */" +
+                "Release Version: 1.0.0\n" +
                 "Author: Mengjq\n" +
                 "Github:\n" +
                 "Java Desktop Edition: git@github.com:GWillS163/AssignmentSubmission_Java_Edition.git\n" +

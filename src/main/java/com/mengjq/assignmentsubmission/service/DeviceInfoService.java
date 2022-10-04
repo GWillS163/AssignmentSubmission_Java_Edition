@@ -58,4 +58,21 @@ public class DeviceInfoService {
         } return null;
     }
 
+    public String findMACByUserId(String stuId) {
+        Document res = null;
+        try {
+            res = deviceInfoMapper.request(new Document("stuId", stuId)).first();
+        } catch (MongoSocketOpenException e) {
+            e.printStackTrace();
+            System.out.println("Link to MongoDB failed!");
+            return  null;
+        } catch ( MongoTimeoutException e) {
+            e.printStackTrace();
+            System.out.println("Link to MongoDB timeout!");
+            return null;
+        }
+        if (res != null ) {
+            return res.getString("deviceMAC");
+        } return null;
+    }
 }

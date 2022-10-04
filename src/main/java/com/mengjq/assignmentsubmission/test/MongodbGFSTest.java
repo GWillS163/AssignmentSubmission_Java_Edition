@@ -3,7 +3,6 @@ import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.util.MongodbGFS;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.types.ObjectId;
 import org.junit.Before;
@@ -59,7 +58,7 @@ public class MongodbGFSTest {
     // 测试下载文件，存数据库
     @Ignore
     public void downFile() {
-        System.out.println(mgfs.downFile(url,new ObjectId("62cb92d33240c450eed4ec58")));
+        System.out.println(mgfs.downOneFile(url,new ObjectId("62cb92d33240c450eed4ec58")));
     }
 
     // 测试删除文件

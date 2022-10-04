@@ -3,6 +3,7 @@ package com.mengjq.assignmentsubmission.service;
 import com.mengjq.assignmentsubmission.mapper.FileInfoMapper;
 import com.mengjq.assignmentsubmission.mapper.OprInfoMapper;
 import com.mengjq.assignmentsubmission.pojo.DeviceInfo;
+import com.mengjq.assignmentsubmission.pojo.StudentInfo;
 import com.mengjq.assignmentsubmission.util.utils;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
@@ -44,11 +45,11 @@ public class OprInfoService {
     }
 
     // Update
-    public void update(DeviceInfo deviceInfo, String lastDeviceMAC) {
+    public void update(DeviceInfo deviceInfo, StudentInfo studentInfo, String lastDeviceMAC) {
         Document doc = new Document()
                 .append("type", "update")
-                .append("stuId", deviceInfo.getStuId())
-                .append("stuName", deviceInfo.getStuName())
+                .append("stuId", studentInfo.getStuId())
+                .append("stuName", studentInfo.getStuName())
                 .append("deviceMAC", deviceInfo.getDeviceMAC())
                 .append("lastDeviceMAC", lastDeviceMAC)
                 .append("dateTime", LocalDateTime.now());
@@ -67,9 +68,9 @@ public class OprInfoService {
         oprInfoMapper.create(doc);
     }
 
-    public void uploadMany(DeviceInfo deviceInfo, List<String> relateFileIds) {
+    public void uploadMany(DeviceInfo deviceInfo, List<Integer> relateFileIds) {
         List<Document> docs = new ArrayList<>();
-        for (String fileId : relateFileIds) {
+        for (Integer fileId : relateFileIds) {
             docs.add(new Document().append("type", "upload")
                     .append("stuId", deviceInfo.getStuId())
                     .append("deviceMAC", deviceInfo.getDeviceMAC())
@@ -107,5 +108,25 @@ public class OprInfoService {
                 .append("relateFileId", fileId));
         }
         oprInfoMapper.createMany(docs);
+    }
+
+    public void requestSelf(DeviceInfo deviceInfo) {
+        Document doc = new Document()
+                .append("type", "requestSelf")
+                .append("stuId", deviceInfo.getStuId())
+                .append("stuName", deviceInfo.getStuName())
+                .append("deviceMAC", deviceInfo.getDeviceMAC())
+                .append("dateTime", LocalDateTime.now());
+        oprInfoMapper.create(doc);
+    }
+
+    public void requestAll(DeviceInfo deviceInfo) {
+        Document doc = new Document()
+                .append("type", "requestAll")
+                .append("stuId", deviceInfo.getStuId())
+                .append("stuName", deviceInfo.getStuName())
+                .append("deviceMAC", deviceInfo.getDeviceMAC())
+                .append("dateTime", LocalDateTime.now());
+        oprInfoMapper.create(doc);
     }
 }

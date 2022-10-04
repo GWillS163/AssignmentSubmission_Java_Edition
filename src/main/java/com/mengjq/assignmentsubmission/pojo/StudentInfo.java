@@ -12,6 +12,18 @@ public class StudentInfo {
     String phone;
     String dormId;
 
+    public StudentInfo() { }
+
+    public StudentInfo(Document studentInfo) {
+        this.stuName = studentInfo.getString("stuName");
+        this.stuId = studentInfo.getString("stuId");
+        this.stuClazz = studentInfo.getString("stuClazz");
+        this.mail = studentInfo.getString("mail");
+        this.qq = studentInfo.getString("qq");
+        this.phone = studentInfo.getString("phone");
+        this.dormId = studentInfo.getString("dormId");
+    }
+
     public String getStuId() {
         return stuId;
     }
@@ -77,5 +89,15 @@ public class StudentInfo {
                 .append("qq", qq)
                 .append("phone", phone)
                 .append("dormId", dormId);
+    }
+
+    public void updateStudent(Document stuInfo) {
+        this.stuName = stuInfo.getString("stuName");
+        this.stuId = stuInfo.getString("stuId");
+        this.stuClazz = stuInfo.getString("stuClazz");
+        this.mail = stuInfo.getString("mail");
+        this.qq = stuInfo.getString("qq");
+        this.phone = stuInfo.getString("phone");
+        this.dormId = stuInfo.getString("dormId");
     }
 }

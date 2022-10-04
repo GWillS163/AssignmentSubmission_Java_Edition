@@ -6,10 +6,17 @@ import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mengjq.assignmentsubmission.util.MongodbGFS;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
+import org.apache.commons.lang.StringUtils;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.io.File;
+import java.nio.file.FileAlreadyExistsException;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 import static com.mongodb.client.model.Projections.*;
@@ -18,10 +25,12 @@ import static com.mongodb.client.model.Sorts.descending;
 
 public class FileInfoService {
     public FileInfoMapper fileInfoMapper;
-    EchoCLI echoCLI = new EchoCLI();
+//    EchoCLI echoCLI = new EchoCLI();
+    public LocalDateTime localDateTime;
 
     public FileInfoService(MongoDatabase clazzDB, String fileInfo) {
         fileInfoMapper = new FileInfoMapper(clazzDB, fileInfo);
+        localDateTime = LocalDateTime.now();
 //        System.out.println(fileInfoDBCollection.getNamespace());
     }
 
@@ -60,53 +69,105 @@ public class FileInfoService {
     }
 
     // 下载文件 - download the file form mongoDB
-    public boolean downloadFiles(String fileId, String value, String path) {
-        FindIterable<Document> docs = fileInfoMapper.request(new Document().append(fileId, value));
-        if(docs.cursor().hasNext()) {
-            Document doc = docs.first();
-            assert doc != null;
-            // get the fileId, fileFormatName or rawName
-            ObjectId fileGFS_id = (ObjectId) doc.get("fileGFS_id");
-            String fileName = doc.getString("fileFormatName");
-            if (fileName == null) {
-                fileName = doc.getString("rawName");
+    public boolean downloadMany(Document criteria, String path) {
+        // 得到所有符合查询的文档 - get all the documents
+        FindIterable<Document> docs = fileInfoMapper.request(criteria);
+//        System.out.println(docs.cursor());
+        // 遍历所有文档 - traverse all the documents
+        if (docs != null) {
+            for (Document doc : docs) {
+                Object gfsId =  doc.get("gfsId");
+                // if gfsId is null
+                if (gfsId == null) {
+                    System.out.println("此文件内容已被删除！");
+                    continue;
+                }
+
+                // 得到文件名 - get the file name
+                String fileName = doc.getString("fileFormatName");
+                if (fileName == null) {
+                    fileName = doc.getString("rawName");
+                }
+                // 可能存在同名文件 - maybe the same file name exist
+                String savePath = path + fileName;
+                // check the savePath is exists
+                File file = new File(savePath);
+                if (file.exists()) {
+                    // add the time to the file name before "." to avoid the same file name
+                    String[] split = fileName.split("\\.");
+                    // get now time add to the file name
+                    String time = doc.getString("uploadTime").replace(":", "-").replace(" ", "_");
+                    System.out.println(time);
+                    System.out.println(time);
+//                    String time = localDateTime.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+                    String newFileName = split[0] + "_" + time + "." + split[1];
+                    savePath = path + newFileName;
+
+                }
+
+                // 保存文件 - save the file
+                System.out.println("saving:" + savePath);
+                fileInfoMapper.downloadByGFS(savePath, (ObjectId) gfsId);
             }
-
-            // use the fileId to download the file
-            fileInfoMapper.downloadByGFS(path + fileName, fileGFS_id);
             return true;
-
-            // old version to save content in following
-//            byte[] bytes = Base64.getDecoder().decode(fileContent);
-//            String fileName = doc.getString("formatName");
-//            if (fileName == null) {
-//                fileName = doc.getString("rawName");
-//            }
-//            boolean saveStatus = saveBinaryData(bytes, path + fileName);
-//            if (saveStatus) {
-//                System.out.println("download file success!");
-//            }
-//            System.out.println(doc.toJson());
-//            System.out.println(fileContent);
-        }else {
-            System.out.println("no file found with this:\n\t fileId: " + fileId + "  and value: " + value);
+        } else {
+            System.out.println("no file found with this:\n\t : " + criteria.toJson());
             System.out.println("download file failed!");
             return false;
         }
     }
 
-    // 保存文件 - save the file to local
-    private boolean saveBinaryData(byte[] decode, String path) {
-        // save binary data to file
-        try {
-            java.io.FileOutputStream fos = new java.io.FileOutputStream(path);
-            fos.write(decode);
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    // 删除文件 - delete the file form mongoDB
+    public boolean deleteMany(String fileId, String value) {
+        // 得到所有符合查询的文档 - get all the documents
+        FindIterable<Document> docs = fileInfoMapper.request(new Document().append(fileId, value));
+        // 遍历所有文档 - traverse all the documents
+        if (docs != null) {
+            for (Document doc : docs) {
+                // 得到文件名 - get the file name
+                // if doc.get("gfsId") type isn't ObjectId, then delete the file
+                if (doc.get("gfsId") instanceof ObjectId) {
+                    ObjectId gfsId = (ObjectId) doc.get("gfsId");
+                    // 删除文件 - delete the file
+                    fileInfoMapper.deleteByGFS(gfsId);
+                }
+                // update fileInfo by bson
+                doc.put("gfsId", null);
+                doc.put("status", "Deleted");
+                fileInfoMapper.update(doc);
+            }
+            return true;
+        } else {
+            System.out.println("no file found with this:\n\t fileId: " + fileId + "  and value: " + value);
+            System.out.println("delete file failed!");
             return false;
         }
-        return true;
+    }
+
+    public boolean deleteMany(String field, Integer value) {
+        // 得到所有符合查询的文档 - get all the documents
+        FindIterable<Document> docs = fileInfoMapper.request(new Document().append(field, value));
+        // 遍历所有文档 - traverse all the documents
+        if (docs != null) {
+            for (Document doc : docs) {
+                // 得到文件名 - get the file name
+                // if doc.get("gfsId") type isn't ObjectId, then delete the file
+                if (doc.get("gfsId") instanceof ObjectId) {
+                    ObjectId gfsId = (ObjectId) doc.get("gfsId");
+                    // 删除文件 - delete the file
+                    fileInfoMapper.deleteByGFS(gfsId);
+                }
+                // update fileInfo by bson
+                doc.put("gfsId", null);
+                doc.put("status", "Deleted");
+                fileInfoMapper.update(doc);
+            }
+            return true;
+        } else {
+            System.out.println("no file found with this:\n\t fileId: " + field + "  and value: " + value);
+            System.out.println("delete file failed!");
+            return false;
+        }
     }
 
 }

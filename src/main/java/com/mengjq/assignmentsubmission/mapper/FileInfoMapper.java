@@ -1,12 +1,13 @@
 package com.mengjq.assignmentsubmission.mapper;
 
-import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mengjq.assignmentsubmission.util.MongodbGFS;
 import com.mongodb.client.*;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 
 import static com.mongodb.client.model.Aggregates.group;
@@ -24,14 +25,14 @@ public class FileInfoMapper {
     }
 
     public FileInfoMapper(MongoDatabase clazzDB, String fileInfoDB) {
+        // 旧方式，所有文件都在一个数据表中
+        fileInfoDBCollection = clazzDB.getCollection(fileInfoDB);
         // connect to collection if not exists , create it
         if (!clazzDB.listCollectionNames().into(new ArrayList<>()).contains(fileInfoDB)) {
             clazzDB.createCollection(fileInfoDB);
         }
-        fileInfoDBCollection = clazzDB.getCollection(fileInfoDB);
-        String bucketName = "Files";
-        GridFSBuckets.create(clazzDB, bucketName);
-        mGFS = new MongodbGFS(clazzDB, bucketName);
+        GridFSBuckets.create(clazzDB, fileInfoDB);
+        mGFS = new MongodbGFS(clazzDB, fileInfoDB);
     }
 
     // add file info to database
@@ -49,12 +50,10 @@ public class FileInfoMapper {
     }
 
     // Update
-    public void update(String fileId, Document newDocument) {
-        // TODO: update file info in database
+    public void update(Document doc) {
         fileInfoDBCollection.updateOne(
-                new Document().append("fileId", fileId),
-                newDocument);
-//                new Document().append("$set", new Document().append("fileId", fileId)));
+                new Document().append("_id", doc.get("_id")),
+                new Document("$set", doc));
     }
 
     // Request
@@ -65,14 +64,14 @@ public class FileInfoMapper {
         return fileInfoDBCollection.find();
     }
 
-    // Delete - new Document().append("fileId", fileId)
-    public void deleteFileInfo(Document doc) {
-        fileInfoDBCollection.deleteOne(doc);
-
-    }
 
     // 特殊下载的实现方式 - 没有传入Document
-    public void downloadByGFS(String path, ObjectId mGFS_id) {
-        mGFS.downFile(path, mGFS_id);
+    public void downloadByGFS(String path, ObjectId gfsId) {
+        mGFS.downOneFile(path, gfsId);
     }
+
+    public void deleteByGFS(ObjectId gfsId) {
+        mGFS.deleteFile(gfsId);
+    }
+
 }

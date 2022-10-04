@@ -22,7 +22,7 @@ public class Config implements Callable<Config> {
 
     // 控制面板 - Configure Panel
     public String LanguageNationCode;
-    public String loadTypes = "test";
+    public String loadTypes = ""; // 这里决定使用哪个配置
     public Integer flushTime = 1000;
 
 
@@ -136,6 +136,7 @@ public class Config implements Callable<Config> {
                 ", deviceRegDB='" + deviceRegDB + '\'' +
                 ", fileInfoDB='" + fileInfoDB + '\'' +
                 ", studentInfoDB='" + studentInfoDB + '\'' +
+                ", oprInfoDB='" + oprInfoDB + '\'' +
                 ", clazz='" + clazz + '\'' +
                 ", LanguageNationCode='" + LanguageNationCode + '\'' +
                 ", loadTypes='" + loadTypes + '\'' +

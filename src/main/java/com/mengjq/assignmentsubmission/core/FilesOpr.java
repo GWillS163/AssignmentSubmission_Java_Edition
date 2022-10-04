@@ -33,4 +33,11 @@ public class FilesOpr {
     }
 
 
+    public List<Integer> getFileIdList() {
+        List<Integer> fileIdList = new java.util.ArrayList<Integer>();
+        for (FileInfo fileInfo : fileInfoList) {
+            fileIdList.add(fileInfo.getFileId());
+        }
+        return fileIdList;
+    }
 }

@@ -2,6 +2,7 @@ package com.mengjq.assignmentsubmission.test.service;
 
 import com.mengjq.assignmentsubmission.conf.Config;
 import com.mengjq.assignmentsubmission.pojo.DeviceInfo;
+import com.mengjq.assignmentsubmission.pojo.StudentInfo;
 import com.mengjq.assignmentsubmission.service.OprInfoService;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -34,7 +35,10 @@ public class OprInfoTest {
     @Test
     public void updateOpr(){
         System.out.println("Update Opr Test");
-        oprInfoService.update(deviceInfo, "123456789");
+        StudentInfo studentInfo = new StudentInfo();
+        studentInfo.setStuId("19852333");
+        studentInfo.setStuName("赵云龙");
+        oprInfoService.update(deviceInfo, studentInfo, "123456789");
     }
 
     @Test
@@ -46,9 +50,9 @@ public class OprInfoTest {
     @Test
     public void uploadManyOpr(){
         System.out.println("Upload Many Opr Test");
-        List<String> relateFileIds = new ArrayList<>();
-        relateFileIds.add("111");
-        relateFileIds.add("222");
+        List<Integer> relateFileIds = new ArrayList<>();
+        relateFileIds.add(111);
+        relateFileIds.add(22);
         oprInfoService.uploadMany(deviceInfo, relateFileIds);
     }
 

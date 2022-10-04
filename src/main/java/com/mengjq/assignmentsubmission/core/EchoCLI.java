@@ -1,7 +1,14 @@
 package com.mengjq.assignmentsubmission.core;
 import com.mengjq.assignmentsubmission.conf.LanguageSet;
+import com.mengjq.assignmentsubmission.pojo.StudentInfo;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import static com.mongodb.client.model.Filters.eq;
 
 public class EchoCLI {
@@ -60,7 +67,7 @@ public class EchoCLI {
 
     public void showMySubmitStatus(FindIterable<Document> docs){
         System.out.println("studentId: ");
-        if (!docs.cursor().hasNext()) {
+        if (!docs.iterator().hasNext()) {
             System.out.println("No submissions");
             return;
         }
@@ -70,10 +77,10 @@ public class EchoCLI {
             num++;
         }
 
-        String[] fields = {"status", "uploadTime", "fileSize", "formatName"};
+        String[] fields = {"fileId", "status", "uploadTime", "fileSize", "formatName"};
         // print the values of fields with equal length
         System.out.println("--------------------------");
-        System.out.printf("%-10s %-10s %-10s %-10s\n", fields);
+        System.out.printf("%-10s %-10s %-10s %-10s %-10s\n", fields);
         System.out.println("--------------------------");
         for (Document doc : docs) {
             Object fileSize = doc.get("fileSize");
@@ -86,9 +93,10 @@ public class EchoCLI {
                 // keep fileSizeMB with 2 decimal places
                 fileSizeMB = Math.round(fileSizeMB * 100) / 100.0;
             }
-            System.out.printf("%-10s %-10s %-10s %-10s\n",
+            System.out.printf("%-10s %-10s %-10s %-10s %-10s\n",
 //                    doc.getString("stuId"),
 //                    doc.getString("stuName"),
+                    String.valueOf(doc.get("fileId")),
                     doc.getString("status"),
                     doc.getString("uploadTime"),
                     Double.toString(fileSizeMB) + "MB",
@@ -256,12 +264,75 @@ public class EchoCLI {
         System.out.println(languageSet.setStuInfoFirst);
     }
 
-    public void fileUpOver(LanguageSet languageSet) {
+    public void fileUpSuccess(LanguageSet languageSet) {
         System.out.println(languageSet.sendUploadOver);
+    }
+    public void fileUpFailed(LanguageSet languageSet) {
+        System.out.println(languageSet.sendUploadFailed);
     }
 
     public void getMenuAbout(LanguageSet languageSet){
         System.out.println(languageSet.menuAbout);
     }
 
+    public void manageMySubmits(FindIterable<Document> myFiles, StudentInfo stuInfo, ServiceMainMongoDB mongoDBService, LanguageSet languageSet) {
+        System.out.println("👇-------------------------------------");
+        // get current Path that at the same level of the jar file
+        String currentPath = System.getProperty("user.dir") + File.separator;
+        System.out.println("文件操作请输入: del <fileId> 或 down <fileId> 或 exit");
+        List<Integer> validInt = new ArrayList<>();
+        for (Document file : myFiles) {
+            validInt.add(file.getInteger("fileId"));
+        }
+        while (true) {
+            //       循环 获得用户输入
+            Scanner sc = new Scanner(System.in);
+            String input = sc.nextLine();
+            if (input.equals("exit")) {
+                break;
+            }
+
+            // 1. 分割输入
+            String[] inputSplit = input.split(" ");
+            // 2. 判断输入是否合法
+            if (inputSplit.length != 2) {
+                System.out.println(languageSet.echoCLIMySubmitsInvalidInput);
+                continue;
+            }
+            // 3. 判断输入的第一个参数是否合法
+            if (!inputSplit[0].equals("del") && !inputSplit[0].equals("down")) {
+                System.out.println(languageSet.echoCLIMySubmitsInvalidInput);
+                continue;
+            }
+            // 4. 判断输入的第二个参数是否合法
+            List<Integer> batchOpr = new ArrayList<>();
+            String[] fileIds = inputSplit[1].split(",");
+            for ( String fileId : fileIds) {
+                try {
+                    int fileIdInt = Integer.parseInt(fileId);
+                    if (!validInt.contains(fileIdInt)) {
+                        System.out.println(languageSet.echoCLIMySubmitsInvalidInput);
+                        continue;
+                    }
+                    batchOpr.add(fileIdInt);
+                } catch (Exception e) {
+                    System.out.println(languageSet.echoCLIMySubmitsInvalidInput);
+                    continue;
+                }
+
+            }
+            // 6.        发送操作请求
+            switch (inputSplit[0]) {
+                case "del":
+                    mongoDBService.deleteFiles(batchOpr);
+                    break;
+                case "down":
+                    System.out.println("文件将保存至:  " + currentPath);
+                    mongoDBService.downloadFiles(batchOpr, currentPath);
+                    break;
+                }
+            }
+
+
+    }
 }

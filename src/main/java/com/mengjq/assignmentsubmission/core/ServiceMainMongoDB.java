@@ -3,10 +3,9 @@ package com.mengjq.assignmentsubmission.core;
 
 import com.mengjq.assignmentsubmission.pojo.DeviceInfo;
 import com.mengjq.assignmentsubmission.pojo.FileInfo;
-import com.mengjq.assignmentsubmission.service.AssignmentInfoService;
-import com.mengjq.assignmentsubmission.service.DeviceInfoService;
-import com.mengjq.assignmentsubmission.service.FileInfoService;
-import com.mengjq.assignmentsubmission.service.StudentInfoService;
+import com.mengjq.assignmentsubmission.pojo.OprInfo;
+import com.mengjq.assignmentsubmission.pojo.StudentInfo;
+import com.mengjq.assignmentsubmission.service.*;
 import com.mongodb.client.*;
 import org.bson.Document;
 
@@ -17,14 +16,15 @@ import java.util.Scanner;
 import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
 
-public class mongoDBOpr {
+public class ServiceMainMongoDB {
     public MongoDatabase clazzDB;
     public AssignmentInfoService assignmentInfoService;
     public DeviceInfoService deviceInfoService;
     public FileInfoService fileInfoService;
     public StudentInfoService studentInfoService;
+    public OprInfoService oprInfoService;
 
-    public mongoDBOpr(String mongodbUrl, String clazz, String assignmentInfo, String deviceReg, String fileInfo, String studentInfo) {
+    public ServiceMainMongoDB(String mongodbUrl, String clazz, String assignmentInfo, String deviceReg, String fileInfo, String studentInfo, String oprInfo) {
         MongoClient mongoClient = MongoClients.create(mongodbUrl);
         clazzDB = mongoClient.getDatabase(clazz);
 
@@ -32,6 +32,17 @@ public class mongoDBOpr {
         deviceInfoService = new DeviceInfoService(clazzDB, deviceReg);
         studentInfoService = new StudentInfoService(clazzDB, studentInfo);
         fileInfoService= new FileInfoService(clazzDB, fileInfo);
+        oprInfoService = new OprInfoService(clazzDB, oprInfo);
+    }
+
+    // Register
+    public StudentInfo firstRegister(DeviceInfo deviceInfo, StudentInfo stuInfo, boolean isRegistered) {
+        if (!isRegistered){
+            registerRecord(deviceInfo);
+            Document studentInfo = regCurrentDevice(deviceInfo);
+            stuInfo.updateStudent(studentInfo);
+        }
+        return stuInfo;
     }
 
     // 设置菜单 - Setting Menu
@@ -103,8 +114,61 @@ public class mongoDBOpr {
     }
 
     // 下载作业 - Download assignments
-    public void downloadFiles(String stuId, String assignmentId, String path) {
-        fileInfoService.downloadFiles(stuId, assignmentId, path);
+    public void downloadFiles(List<Integer> fileIds, String savePath) {
+        for (Integer fileId : fileIds) {
+            Document doc = new Document().append("fileId", fileId);
+            fileInfoService.downloadMany(doc, savePath);
+        }
     }
 
+    // 删除作业 - Delete assignments
+    public void deleteFiles(List<Integer> fileIds) {
+        for (Integer fileId : fileIds) {
+            fileInfoService.deleteMany("fileId", fileId);
+    }
+    }
+
+    // register Record
+    public void registerRecord(DeviceInfo deviceInfo) {
+        oprInfoService.register(deviceInfo);
+    }
+
+    // login Record
+    public void loginRecord(DeviceInfo deviceInfo) {
+        oprInfoService.login(deviceInfo);
+    }
+
+    // update Record
+    public void updateRecord(DeviceInfo deviceInfo, StudentInfo studentInfo, String lastDeviceMAC) {
+        oprInfoService.update(deviceInfo, studentInfo, lastDeviceMAC);
+    }
+
+    // upload Record
+    public void uploadRecord(DeviceInfo deviceInfo, List<Integer> relateFileIds) {
+        oprInfoService.uploadMany(deviceInfo, relateFileIds);
+    }
+
+    // download Record
+    public void downloadRecord(DeviceInfo deviceInfo, List<String> relateFileIds) {
+        oprInfoService.downloadMany(deviceInfo, relateFileIds);
+    }
+
+    // delete Record
+    public void deleteRecord(DeviceInfo deviceInfo, List<String>  relateFileIds) {
+        oprInfoService.deleteMany(deviceInfo, relateFileIds);
+    }
+
+    // request Record
+    public void requestSelfRecord(DeviceInfo deviceInfo) {
+        oprInfoService.requestSelf(deviceInfo);
+    }
+
+    // request All Record
+    public void requestAllRecord(DeviceInfo deviceInfo) {
+        oprInfoService.requestAll(deviceInfo);
+    }
+
+    public String getLastMAC(String stuId) {
+        return deviceInfoService.findMACByUserId(stuId);
+    }
 }
