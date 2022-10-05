@@ -66,6 +66,8 @@ public class main_noArgs {
             }
             echoCLI.colorPrint(languageSet.sendModeAnyKeyContinue, "green");
             sc.nextLine();
+
+
         }
     }
 }
