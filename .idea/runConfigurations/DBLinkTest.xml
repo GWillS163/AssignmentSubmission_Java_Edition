@@ -2,7 +2,7 @@
   <configuration default="false" name="DBLinkTest" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-    <option name="MAIN_CLASS_NAME" value="com.mengjq.assignmentsubmission.test.DBLinkTest" />
+    <option name="MAIN_CLASS_NAME" value="com.mengjq.assignmentsubmission.test.mongoDBTest.DBLinkTest" />
     <module name="AssignmentSubmmsion" />
     <extension name="coverage">
       <pattern>

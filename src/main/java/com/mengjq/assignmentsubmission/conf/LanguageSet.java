@@ -24,8 +24,10 @@ public class LanguageSet {
     public String sendModeAnyKeyContinue;
     public String sendUploadFailed;
     public String echoCLIMySubmitsInvalidInput;
-    public String echoCLIMySubmitsDeleteSuccess;
-    public String echoCLIMySubmitsDownSuccess;
+    public String deleteSuccess;
+    public String downloadSuccess;
+    public String exitManage;
+    public String timeWait;
 
     public LanguageSet(String nationCode){
     // I want to build a more Generic Tool, so I can help more people. :D
@@ -57,9 +59,9 @@ public class LanguageSet {
         menuAssiIdNotExist = "\t作业编号不存在，请重新输入！";
         selectLoopSelected = "已选择:";
         selectLoopSelectInvalid = "选择无效，请重新选择！\r";
-        menu1title = "1. 输入学生信息";
-        menu2title = "2. 查看已提交作业(云端)";
-        menu3title = "3. 查看所有人已提交(云端)";
+        menu1title = "1. 注册学生信息";
+        menu2title = "2. 管理已提交作业(云端)";
+        menu3title = "3. 查看所有人提交(云端)";
         menu4title = "4. 关于";
         menu5title = "5. 退出";
         setModeInvalidInput = "无效输入!";
@@ -74,8 +76,10 @@ public class LanguageSet {
                 "下载作业: down [id(,id,id,...)]  \n" +
                 "\t例如: down 1, down 2,5,2\n" +
                 "退出: exit \n";
-        echoCLIMySubmitsDeleteSuccess = "删除成功！";
-        echoCLIMySubmitsDownSuccess = "下载成功！";
+        deleteSuccess = "删除成功！";
+        downloadSuccess = "下载成功！";
+        exitManage = "[Enter]退出管理";
+        timeWait = "即将退出 ";
         menuAbout = "\n" +
                 "\n" +
                 "     _            _      ____        _     \n" +

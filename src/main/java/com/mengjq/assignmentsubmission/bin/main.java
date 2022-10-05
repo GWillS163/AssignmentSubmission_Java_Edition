@@ -27,12 +27,12 @@ public class main {
 
         // 读取云端配置信息 - Read Cloud Config
         echoCLI.colorPrint("读取云端配置信息 - Read Cloud Config", "green");
-        Document stuInfo = mongoDBService.tryGetStuInfoByMAC(deviceInfo.getDeviceMAC());
+        Document stuInfo = mongoDBService.tryGetStuInfoByMAC(deviceInfo.getDeviceMAC()); // 本设备的上一条学生信息 - The last student information of this device
         boolean isRegistered = stuInfo != null;
         if (!isRegistered) {
             echoCLI.echo(languageSet.echoCLIShowAllStatusNoStu);
         }else{
-            deviceInfo.updateStudentInfo(stuInfo);
+            deviceInfo.updateStudentInfo(stuInfo); // 更新学生信息 - Update student information
             studentInfo.updateStudent(stuInfo);
         }
         // 输出读取到的配置信息 - print student value info

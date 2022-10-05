@@ -21,7 +21,7 @@ public class FileInfo {
     public String formatName = null; //: 数据结构-1909班-19852331-第六次.docx
     public String fileContent = null; //: "!l.dfd"
     public String hash = null; //: fae0b27c451c728867a567e8c1bb4e53
-    public String status = "未被查看"; //: fae0b27c451c728867a567e8c1bb4e53
+    public String status = "unCheck"; //: fae0b27c451c728867a567e8c1bb4e53
 
     public FileInfo(String filePath)  {
         // random id

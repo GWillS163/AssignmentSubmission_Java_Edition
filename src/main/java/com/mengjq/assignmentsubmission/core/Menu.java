@@ -4,6 +4,7 @@ import com.mengjq.assignmentsubmission.conf.LanguageSet;
 import com.mengjq.assignmentsubmission.pojo.FileInfo;
 import com.mengjq.assignmentsubmission.conf.LanguageSet;
 import com.mengjq.assignmentsubmission.pojo.StudentInfo;
+import com.mengjq.assignmentsubmission.util.UserInputCheck;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -13,7 +14,11 @@ import java.util.Scanner;
 
 // add comments here
 public class Menu {
+    public static UserInputCheck userInputCheck;
 
+    public Menu()
+    {userInputCheck = new UserInputCheck();
+    }
     public static ArrayList<String> selectRenameMenu(Iterable<Document> assignments, FilesOpr filesOpr, StudentInfo stuInfo, LanguageSet languageSet) {
         ArrayList<String> selectList = new ArrayList<>();
         // create a list to store all the assignment assiId
@@ -60,25 +65,6 @@ public class Menu {
         return selectList;
     }
 
-    public static Integer selectLoop(int start, int end, LanguageSet languageSet) {
-        while (true) {
-            // get nextLine from user by Scanner
-            Scanner scanner = new Scanner(System.in);
-            int select = 0;
-            try {
-                select = scanner.nextInt();
-            } catch (Exception e) {
-                System.out.println(languageSet.selectLoopSelectInvalid);
-                continue;
-            }
-            // check if the input is valid
-            if (select >= start && select <= end) {
-                return select;
-            }
-            System.out.println(languageSet.selectLoopSelectInvalid);
-        }
-    }
-
     public static int selectSettingMenu(LanguageSet languageSet) {
         String[] settings = {
                 languageSet.menu1title,
@@ -92,7 +78,7 @@ public class Menu {
             System.out.println(setting);
         }
         System.out.println("_______________________________");
-        return selectLoop(0, settings.length, languageSet);
+        return UserInputCheck.selectLoop(0, settings.length, languageSet);
     }
 }
 

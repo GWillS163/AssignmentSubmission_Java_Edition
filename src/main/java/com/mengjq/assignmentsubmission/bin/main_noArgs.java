@@ -10,6 +10,7 @@ import com.mengjq.assignmentsubmission.pojo.StudentInfo;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 
+import javax.print.Doc;
 import java.util.Scanner;
 
 public class main_noArgs {
@@ -28,7 +29,9 @@ public class main_noArgs {
                     assert stuInfo != null;
                     String lastMAC = mongoDBService.getLastMAC(stuInfo.getStuId());
                     mongoDBService.updateRecord(deviceInfo, stuInfo, lastMAC);
-                    mongoDBService.regCurrentDevice(deviceInfo);
+                    Document stuInfoDoc = mongoDBService.updateStuInfo(); // 更新个人信息 - Update Personal Info
+                    stuInfo.updateStudent(stuInfoDoc);
+                    deviceInfo = mongoDBService.regCurrentDevice(deviceInfo, stuInfo); // 更新设备信息 - Update Device Info
                     break;
                 case 2:
                     if (stuInfo == null) {
@@ -47,7 +50,9 @@ public class main_noArgs {
                     FindIterable<Document> assignments = mongoDBService.getCollectingAssignments();
                     FindIterable<Document> allFiles = mongoDBService.getAllSubmittedFileInfo();
                     FindIterable<Document> allStuInfo = mongoDBService.getAllStuInfo();
-                    echoCLI.showAllSubmitStatus(assignments, allFiles, allStuInfo, languageSet);
+                    echoCLI.showAllSubmitStatusBasically(allFiles);
+                    // TODO: 通过表格的形式展示所有的作业信息
+//                    echoCLI.showAllSubmitStatus(allFiles);
                     break;
                 case 4:
                     echoCLI.getMenuAbout(languageSet);

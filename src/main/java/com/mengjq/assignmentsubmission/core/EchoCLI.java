@@ -1,17 +1,21 @@
 package com.mengjq.assignmentsubmission.core;
 import com.mengjq.assignmentsubmission.conf.LanguageSet;
 import com.mengjq.assignmentsubmission.pojo.StudentInfo;
+import com.mengjq.assignmentsubmission.util.UserInputCheck;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import static com.mongodb.client.model.Filters.eq;
 
 public class EchoCLI {
+    UserInputCheck userInputCheck = new UserInputCheck();
+
     public void colorPrint(String str, String color) {
         // turn color to the cli color code like \033[0m
         switch (color) {
@@ -66,9 +70,9 @@ public class EchoCLI {
     }
 
     public void showMySubmitStatus(FindIterable<Document> docs){
-        System.out.println("studentId: ");
+        System.out.println("以下是你的提交状态：");
         if (!docs.iterator().hasNext()) {
-            System.out.println("No submissions");
+            System.out.println("\nNo submissions\n");
             return;
         }
         // acquire the number of docs
@@ -106,6 +110,47 @@ public class EchoCLI {
         System.out.println("Total: " + num + " submissions");
     }
 
+    public void showAllSubmitStatusBasically(FindIterable<Document> fileInfos){
+        // sort the fileInfos by uploadTime
+        fileInfos.sort(new Document("uploadTime", -1));
+        System.out.println("以下是所有提交状态：");
+        if (!fileInfos.iterator().hasNext()) {
+            System.out.println("\nNo submissions\n");
+            return;
+        }
+        // acquire the number of docs
+        int num = 0;
+        for (Document doc : fileInfos) {
+            num++;
+        }
+        // print all the fileInfos
+        String[] fields = {"fileId", "stuId", "stuName", "status", "uploadTime", "fileSize", "formatName"};
+        // print the values of fields with equal length
+        System.out.println("--------------------------");
+        System.out.printf("%-10s %-10s %-10s %-10s %-10s %-10s %-10s\n", fields);
+        System.out.println("--------------------------");
+        for (Document doc : fileInfos) {
+            Object fileSize = doc.get("fileSize");
+            double fileSizeMB;
+            if (fileSize == null) {
+                fileSizeMB = 0;
+            }else {
+                // convert the String filesize to String fileSize with MB format
+                fileSizeMB = Double.parseDouble(String.valueOf((Integer) fileSize)) / 1024 / 1024;
+                // keep fileSizeMB with 2 decimal places
+                fileSizeMB = Math.round(fileSizeMB * 100) / 100.0;
+            }
+            System.out.printf("%-10s %-10s %-10s %-10s %-10s %-10s %-10s\n",
+                    String.valueOf(doc.get("fileId")),
+                    doc.getString("stuId"),
+                    doc.getString("stuName"),
+                    doc.getString("status"),
+                    doc.getString("uploadTime"),
+                    Double.toString(fileSizeMB) + "MB",
+                    doc.getString("formatName"));
+        }
+
+    }
     public void showAllSubmitStatus(FindIterable<Document> assignments, FindIterable<Document> fileInfos, FindIterable<Document> stuInfos, LanguageSet languageSet){
         // 人名  A作业  B作业  C作业
         // 孟    未交   已交   已交
@@ -145,8 +190,6 @@ public class EchoCLI {
                     // format the fileSize and keep two decimal s
                     System.out.printf("\t%-10s", Math.round(Double.parseDouble(String.valueOf(fileInfo.getInteger("fileSize"))) / 1024 / 1024 * 100) / 100.0 + "MB");
                 }
-
-
                 System.out.println();
             }
             // Type 2: query data has no stuId
@@ -249,7 +292,7 @@ public class EchoCLI {
 
 
     public void showStuInfo(Document stuInfo) {
-        System.out.print("Current student: ");
+        System.out.print("本机已注册，欢迎: ");
         if (stuInfo == null) {
             colorPrint("No student selected", "red");
         } else {
@@ -291,48 +334,45 @@ public class EchoCLI {
             if (input.equals("exit")) {
                 break;
             }
-
             // 1. 分割输入
             String[] inputSplit = input.split(" ");
-            // 2. 判断输入是否合法
-            if (inputSplit.length != 2) {
-                System.out.println(languageSet.echoCLIMySubmitsInvalidInput);
-                continue;
-            }
-            // 3. 判断输入的第一个参数是否合法
-            if (!inputSplit[0].equals("del") && !inputSplit[0].equals("down")) {
-                System.out.println(languageSet.echoCLIMySubmitsInvalidInput);
-                continue;
-            }
-            // 4. 判断输入的第二个参数是否合法
-            List<Integer> batchOpr = new ArrayList<>();
-            String[] fileIds = inputSplit[1].split(",");
-            for ( String fileId : fileIds) {
-                try {
-                    int fileIdInt = Integer.parseInt(fileId);
-                    if (!validInt.contains(fileIdInt)) {
-                        System.out.println(languageSet.echoCLIMySubmitsInvalidInput);
-                        continue;
-                    }
-                    batchOpr.add(fileIdInt);
-                } catch (Exception e) {
-                    System.out.println(languageSet.echoCLIMySubmitsInvalidInput);
-                    continue;
-                }
+            // input Check
+            if (!userInputCheck.manageFileInput1(validInt, inputSplit, languageSet)){ continue; }
+            List<Integer> validSelects = userInputCheck.manageFileInput2(validInt, inputSplit, languageSet);
 
-            }
-            // 6.        发送操作请求
+            // 6.  发送操作请求
             switch (inputSplit[0]) {
                 case "del":
-                    mongoDBService.deleteFiles(batchOpr);
+                    mongoDBService.deleteFiles(validSelects);
+                    colorPrint(languageSet.deleteSuccess, "green");
                     break;
                 case "down":
                     System.out.println("文件将保存至:  " + currentPath);
-                    mongoDBService.downloadFiles(batchOpr, currentPath);
+                    mongoDBService.downloadFiles(validSelects, currentPath);
+                    colorPrint(languageSet.downloadSuccess, "green");
                     break;
                 }
+            colorPrint(languageSet.exitManage, "green");
             }
 
 
+    }
+
+    public void timeWait(LanguageSet languageSet, Integer waitTime) {
+        colorPrint(languageSet.timeWait, "cyan");
+        // define a String[] waitTimeStr , that have "waitTime" "-"s
+        String[] waitTimeStr = new String[waitTime];
+        Arrays.fill(waitTimeStr, "-");
+        for (int i = 0; i < waitTime; i++) {
+            waitTimeStr[i] = "|";
+            // print waitTimeStr at the same line
+            System.out.print("\r"+String.join("", waitTimeStr));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }

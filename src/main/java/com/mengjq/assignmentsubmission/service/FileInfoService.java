@@ -36,11 +36,16 @@ public class FileInfoService {
 
     // 个人查询 - 查询个人所有已提交的作业
     public FindIterable<Document> getMySubmitStatus(String stuId){
-
-        return fileInfoMapper.request((Document) new Document().append("stuId", stuId))
-                .projection(fields(
-                        exclude("_id", "fileContent", "stuId", "stuName")
-                ))
+        // query all files stuId = stuId, but exclude status == null
+        return fileInfoMapper.request(
+                (Document) new Document()// 查询条件 - Query condition
+                        .append("stuId", stuId)
+                        .append("status", new Document("$ne", null))
+                        .append("status", new Document("$ne", "Deleted"))
+                )
+                .projection( // 查询字段 - Query field
+                            fields(exclude("_id",  "fileContent", "stuId", "stuName"))
+                        )
                 .sort(descending("uploadTime"));
     }
 

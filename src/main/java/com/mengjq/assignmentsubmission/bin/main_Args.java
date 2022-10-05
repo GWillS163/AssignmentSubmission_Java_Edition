@@ -39,11 +39,11 @@ public class main_Args {
 
         //5. 上交 Files - Submit files
         boolean res = mongoDBService.uploadFiles(filesOpr.fileInfoList);
-        if(res){
-            echoCLI.fileUpSuccess(languageSet);
-        }else{
-            echoCLI.fileUpFailed(languageSet);
-        }
+        if(res){echoCLI.fileUpSuccess(languageSet);
+        }else{echoCLI.fileUpFailed(languageSet);}
         mongoDBService.uploadRecord(deviceInfo, filesOpr.getFileIdList());
+        // time wait 20s and promote user to check the result
+        echoCLI.timeWait(languageSet, 20);
+
     }
 }

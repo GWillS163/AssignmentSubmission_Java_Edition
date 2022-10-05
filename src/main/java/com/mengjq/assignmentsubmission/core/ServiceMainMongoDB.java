@@ -39,14 +39,15 @@ public class ServiceMainMongoDB {
     public StudentInfo firstRegister(DeviceInfo deviceInfo, StudentInfo stuInfo, boolean isRegistered) {
         if (!isRegistered){
             registerRecord(deviceInfo);
-            Document studentInfo = regCurrentDevice(deviceInfo);
-            stuInfo.updateStudent(studentInfo);
+            Document stuInfoDoc = updateStuInfo(); // 更新个人信息 - Update Personal Info
+            deviceInfo = regCurrentDevice(deviceInfo, stuInfo); // 更新设备信息 - Update Device Info
+            stuInfo.updateStudent(stuInfoDoc);
         }
         return stuInfo;
     }
 
-    // 设置菜单 - Setting Menu
-    public Document regCurrentDevice(DeviceInfo deviceInfo) {
+    // 获取用户输入的学号 - Get user input student ID
+    public Document updateStuInfo() {
         while (true) {
             // Scan the user input
             Scanner sc = new Scanner(System.in);
@@ -70,10 +71,18 @@ public class ServiceMainMongoDB {
             System.out.println("Are you sure? (y/n)");
             String confirm = sc.nextLine();
             if (Objects.equals(confirm, "y")) {
-                deviceInfo.setStuId(stuId);
-                deviceInfoService.regCurrentDevice(deviceInfo);
                 return stuInfoDoc;
             }
+        }
+    }
+
+    // 设置菜单 - Setting Menu
+    public DeviceInfo regCurrentDevice(DeviceInfo deviceInfo, StudentInfo studentInfo) {
+        while (true) {
+            deviceInfo.setStuId(studentInfo.getStuId());
+            deviceInfo.setStuName(studentInfo.getStuName());
+            deviceInfoService.regCurrentDevice(deviceInfo);
+            return deviceInfo;
         }
     }
 

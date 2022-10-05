@@ -30,11 +30,9 @@ public class DeviceInfoService {
             // register 19852331 孟骏清 0F-A1-CE-0C-1C-1C  2020-12-12 12:12:12
             System.out.println("DeviceReg success!");
         } else {
-            // 如果是已经注册过的设备，则更新(时间)
-            // TODO: usingHistory Collection 内更新设备信息
-            // update 19852331 孟骏清 CD-BC-DC-0C-1C-1C  2020-12-12 12:12:12 0F-A1-CE-0F-A1-CE
-            existDevice.put("loginHistory", java.time.LocalDateTime.now() + "\n" + existDevice.get("loginHistory"));
-            deviceInfoMapper.update(existDevice.get("deviceMAC").toString(), existDevice);
+            // 如果MAC 地址已经存在，则更新设备信息
+//            existDevice.put("loginHistory", java.time.LocalDateTime.now() + "\n" + existDevice.get("loginHistory"));;
+            deviceInfoMapper.update(existDevice.get("deviceMAC").toString(), deviceInfo.toDocument());
             System.out.println("DeviceReg update success! The device has been registered!");
         }
     }
