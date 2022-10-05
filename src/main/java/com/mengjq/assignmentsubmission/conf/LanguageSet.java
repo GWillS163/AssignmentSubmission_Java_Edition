@@ -130,9 +130,9 @@ public class LanguageSet {
         deleteSuccess = "删除成功！";
         downloadSuccess = "下载成功！";
         exitManage = "[Enter]退出管理";
-        timeWait = "即将退出   ";
+        timeWait = "即将退出";
         menuAbout = "/***\n  " +
-                "     _            _      ____        _     \n" +
+                "     _            _      ____        _           \n" +
                 "    / \\   ___ ___(_)    / ___| _   _| |__  \n" +
                 "   / _ \\ / __/ __| |____\\___ \\| | | | '_ \\ \n" +
                 "  / ___ \\\\__ \\__ \\ |_____|__) | |_| | |_) |\n" +
