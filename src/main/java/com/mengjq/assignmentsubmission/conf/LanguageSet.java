@@ -125,7 +125,7 @@ public class LanguageSet {
                 "删除作业: del [id(,id,id,...)]  \n" +
                 "\t例如: del 1 & del 2,5,2\n" +
                 "下载作业: down [id(,id,id,...)]  \n" +
-                "\t例如: down 1, down 2,5,2\n" +
+                "\t例如: down 1, down 2,5,2   \n" +
                 "退出: exit \n";
         deleteSuccess = "删除成功！";
         downloadSuccess = "下载成功！";
@@ -145,6 +145,5 @@ public class LanguageSet {
                 "Java Web Edition: ***\n" +
                 "Python Desktop Edition: ***\n" +
                 "Python Web Edition: ***";
-
     }
 }
